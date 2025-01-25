@@ -12,6 +12,9 @@ SnackNLoad is a Flutter package that provides a powerful, customizable, and easy
 - Custom animations for loading indicators.
 - Support for toast notifications at different positions (top, center, bottom).
 - Easy integration and configuration.
+- Styled snackbar with position options of top, center, bottom.
+- Show dialog with customization options and adaptive support.
+- All features are accessible after initilization and no need to provide context because snacknload uses there in built global context.
 
 ## Installation
 
