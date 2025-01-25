@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 T? _ambiguate<T>(T? value) => value;
 
 class SnackNLoadOverlayEntry extends OverlayEntry {
+
   @override
   final WidgetBuilder builder;
 

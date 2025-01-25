@@ -29,7 +29,7 @@ class LoadingTheme {
       SnackNLoad.instance.loadingStyle == LoadingStyle.custom
           ? SnackNLoad.instance.backgroundColor!
           : SnackNLoad.instance.loadingStyle == LoadingStyle.dark
-              ? Colors.black.withOpacity(0.9)
+              ? Colors.black.withValues(alpha:0.9)
               : Colors.white;
 
   /// boxShadow color of loading
@@ -52,7 +52,7 @@ class LoadingTheme {
     return maskType == LoadingMaskType.custom
         ? SnackNLoad.instance.maskColor!
         : maskType == LoadingMaskType.black
-            ? Colors.black.withOpacity(0.5)
+            ? Colors.black.withValues(alpha:0.5)
             : Colors.transparent;
   }
 

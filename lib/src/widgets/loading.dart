@@ -12,10 +12,10 @@ class LoadingWidget extends StatefulWidget {
   })  : assert(child != null);
 
   @override
-  _LoadingWidgetState createState() => _LoadingWidgetState();
+  LoadingWidgetState createState() => LoadingWidgetState();
 }
 
-class _LoadingWidgetState extends State<LoadingWidget> {
+class LoadingWidgetState extends State<LoadingWidget> {
   late SnackNLoadOverlayEntry _overlayEntry;
 
   @override

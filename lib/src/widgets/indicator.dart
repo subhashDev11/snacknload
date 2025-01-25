@@ -9,13 +9,12 @@ class LoadingIndicator extends StatefulWidget {
   });
 
   @override
-  _LoadingIndicatorState createState() => _LoadingIndicatorState();
+  LoadingIndicatorState createState() => LoadingIndicatorState();
 }
 
-class _LoadingIndicatorState extends State<LoadingIndicator> {
+class LoadingIndicatorState extends State<LoadingIndicator> {
   final double _size = LoadingTheme.indicatorSize;
 
-  /// indicator color of loading
   final Color _indicatorColor = LoadingTheme.indicatorColor;
   late Widget _indicator;
 
@@ -176,13 +175,7 @@ class _LoadingIndicatorState extends State<LoadingIndicator> {
           size: _size,
         );
         break;
-      default:
-        _indicator = SpinKitFadingCircle(
-          color: _indicatorColor,
-          size: _size,
-        );
-        break;
-    }
+      }
 
     return Container(
       constraints: BoxConstraints(

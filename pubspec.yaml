@@ -2,6 +2,8 @@ name: snacknload
 description: "A new Flutter project."
 version: 1.0.1
 homepage: https://github.com/subhashDev11/snacknload.git
+#authors:
+#  - Subhash Chandra Shukla (subhashchandras7318@gmail.com)
 
 environment:
   sdk: ^3.6.0
@@ -18,7 +20,6 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 flutter:
-
 
 screenshots:
   - description: 'This is shows the loader.'

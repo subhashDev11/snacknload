@@ -77,7 +77,7 @@ class DialogContainerState extends State<DialogContainer> with SingleTickerProvi
 
   Future<void> show(bool animation) {
     if (isPersistentCallbacks) {
-      Completer<void> completer = Completer<void>();
+      Completer<dynamic> completer = Completer<void>();
       _ambiguate(SchedulerBinding.instance)!
           .addPostFrameCallback((_) => completer.complete(_animationController.forward(from: animation ? 0 : 1)));
       return completer.future;
@@ -88,7 +88,7 @@ class DialogContainerState extends State<DialogContainer> with SingleTickerProvi
 
   Future<void> dismiss(bool animation) {
     if (isPersistentCallbacks) {
-      Completer<void> completer = Completer<void>();
+      Completer<dynamic> completer = Completer<void>();
       _ambiguate(SchedulerBinding.instance)!
           .addPostFrameCallback((_) => completer.complete(_animationController.reverse(from: animation ? 1 : 0)));
       return completer.future;

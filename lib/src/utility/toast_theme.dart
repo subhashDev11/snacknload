@@ -58,7 +58,7 @@ class ToastTheme {
     return maskType == LoadingMaskType.custom
         ? SnackNLoad.instance.maskColor!
         : maskType == LoadingMaskType.black
-        ? Colors.black.withOpacity(0.5)
+        ? Colors.black.withValues(alpha:0.5)
         : Colors.transparent;
   }
 
