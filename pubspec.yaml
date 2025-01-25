@@ -1,7 +1,7 @@
 name: snacknload
 description: "A new Flutter project."
-version: 0.0.1
-homepage:
+version: 1.0.1
+homepage: https://github.com/subhashDev11/snacknload.git
 
 environment:
   sdk: ^3.6.0
@@ -18,8 +18,6 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 flutter:
-
-
 
 
 screenshots:
