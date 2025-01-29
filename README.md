@@ -22,7 +22,7 @@ Add `snacknload` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  snacknload: ^1.0.1
+  snacknload: ^1.0.2
 ```
 
 Then, run:

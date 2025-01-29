@@ -363,7 +363,7 @@ class SnackNLoad {
     bool? dismissOnTap,
     bool? showIcon,
     String? title,
-    required ToastType type,
+    required SnackbarType type,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
     bool? showDivider,
@@ -515,7 +515,7 @@ class SnackNLoad {
     bool? showDivider,
     String? title,
     LoadingToastPosition? toastPosition,
-    required ToastType type,
+    required SnackbarType type,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
   }) async {
@@ -546,7 +546,7 @@ class SnackNLoad {
 
     Completer<void> completer = Completer<void>();
     _key = GlobalKey<LoadingContainerState>();
-    _w = ToastContainer(
+    _w = SnackbarContainer(
       key: _key,
       type: type,
       message: message,

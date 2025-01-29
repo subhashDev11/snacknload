@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       _timer?.cancel();
                       SnackNLoad.showSnackBar(
                         'Welcome in year 2025!\nMay this year will full fill your all dreams and provide you happiness moment',
-                        type: ToastType.success,
+                        type: SnackbarType.success,
                         showIcon: true,
                         toastPosition: LoadingToastPosition.top,
                       );

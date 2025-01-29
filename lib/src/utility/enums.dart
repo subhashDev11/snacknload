@@ -1,5 +1,6 @@
 
 enum ToastType { info, success, error, warning }
+enum SnackbarType { info, success, error, warning }
 
 
 /// loading style

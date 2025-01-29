@@ -7,7 +7,7 @@ import '../utility/toast_theme.dart';
 
 T? _ambiguate<T>(T? value) => value;
 
-class ToastContainer extends StatefulWidget {
+class SnackbarContainer extends StatefulWidget {
   final String message;
   final String? title;
   final bool? dismissOnTap;
@@ -15,13 +15,13 @@ class ToastContainer extends StatefulWidget {
   final LoadingMaskType? maskType;
   final Completer<void>? completer;
   final bool animation;
-  final ToastType type;
+  final SnackbarType type;
   final TextStyle? titleStyle;
   final TextStyle? messageStyle;
   final bool? showIcon;
   final bool? showDivider;
 
-  const ToastContainer({
+  const SnackbarContainer({
     super.key,
     this.messageStyle,
     this.titleStyle,
@@ -38,10 +38,10 @@ class ToastContainer extends StatefulWidget {
   });
 
   @override
-  ToastContainerState createState() => ToastContainerState();
+  SnackbarContainerState createState() => SnackbarContainerState();
 }
 
-class ToastContainerState extends State<ToastContainer> with SingleTickerProviderStateMixin {
+class SnackbarContainerState extends State<SnackbarContainer> with SingleTickerProviderStateMixin {
   late String _message;
   Color? _maskColor;
   late AnimationController _animationController;
@@ -170,7 +170,7 @@ class _Indicator extends StatelessWidget {
   final String? title;
   final TextStyle? titleStyle;
   final TextStyle? messageStyle;
-  final ToastType type;
+  final SnackbarType type;
   final bool showIcon;
   final bool showDivider;
 
@@ -186,24 +186,24 @@ class _Indicator extends StatelessWidget {
 
   Color _getBackgroundColor() {
     switch (type) {
-      case ToastType.success:
+      case SnackbarType.success:
         return Colors.green;
-      case ToastType.error:
+      case SnackbarType.error:
         return Colors.red;
-      case ToastType.warning:
+      case SnackbarType.warning:
         return Colors.orange;
-      case ToastType.info:
+      case SnackbarType.info:
         return Colors.blue;
     }
   }
 
   IconData _getIcon() {
     switch (type) {
-      case ToastType.success:
+      case SnackbarType.success:
         return Icons.check_circle;
-      case ToastType.error:
+      case SnackbarType.error:
         return Icons.error;
-      case ToastType.warning:
+      case SnackbarType.warning:
         return Icons.warning;
       default:
         return Icons.info;
