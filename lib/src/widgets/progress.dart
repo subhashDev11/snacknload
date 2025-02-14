@@ -51,6 +51,7 @@ class LoadingProgressState extends State<LoadingProgress> {
 }
 
 class _CircleProgress extends ProgressIndicator {
+
   @override
   final double value;
   final double width;

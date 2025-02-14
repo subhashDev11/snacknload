@@ -36,14 +36,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'SnackNLoad Example'),
+      home: _MyHomePage(title: 'SnackNLoad Example'),
       builder: SnackNLoad.init(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, this.title});
+class _MyHomePage extends StatefulWidget {
+  const _MyHomePage({this.title});
 
   final String? title;
 
@@ -51,7 +51,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<_MyHomePage> {
   Timer? _timer;
   late double _progress;
 
@@ -59,13 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     SnackNLoad.addStatusCallback((status) {
-      print('Loading Status $status');
       if (status == LoadingStatus.dismiss) {
         _timer?.cancel();
       }
     });
     SnackNLoad.showSuccess('Use in initState');
-    // SnackNLoad.removeCallbacks();
   }
 
   @override
@@ -94,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () async {
                       _timer?.cancel();
                       await SnackNLoad.dismiss();
-                      print('Loading dismiss');
                     },
                   ),
                   TextButton(
@@ -105,7 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         status: 'loading...',
                         maskType: LoadingMaskType.black,
                       );
-                      print('Loading show');
                     },
                   ),
                   TextButton(
@@ -152,7 +148,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () async {
                       _timer?.cancel();
                       await SnackNLoad.showSuccess('Great Success!');
-                      print('Loading showSuccess');
                     },
                   ),
                   TextButton(

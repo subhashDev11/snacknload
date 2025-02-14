@@ -1,6 +1,6 @@
 import 'package:snacknload/src/utility/enums.dart';
 import 'package:flutter/material.dart';
-import '../utility/theme.dart';
+import 'package:snacknload/src/utility/theme.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingIndicator extends StatefulWidget {

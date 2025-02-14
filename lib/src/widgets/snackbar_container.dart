@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import '../utility/enums.dart';
-import '../utility/snacknload_container.dart';
-import '../utility/toast_theme.dart';
+import 'package:snacknload/src/utility/enums.dart';
+import 'package:snacknload/src/utility/snacknload_container.dart';
+import 'package:snacknload/src/utility/toast_theme.dart';
 
 T? _ambiguate<T>(T? value) => value;
 
@@ -20,6 +20,9 @@ class SnackbarContainer extends StatefulWidget {
   final TextStyle? messageStyle;
   final bool? showIcon;
   final bool? showDivider;
+  final Color? backgroundColor;
+  final EdgeInsets? contentPadding;
+  final EdgeInsets? margin;
 
   const SnackbarContainer({
     super.key,
@@ -35,6 +38,9 @@ class SnackbarContainer extends StatefulWidget {
     required this.type,
     this.showIcon,
     this.showDivider,
+    required this.backgroundColor,
+    required this.contentPadding,
+    required this.margin,
   });
 
   @override
@@ -56,13 +62,13 @@ class SnackbarContainerState extends State<SnackbarContainer> with SingleTickerP
     super.initState();
     if (!mounted) return;
     _message = widget.message;
-    _alignment = ToastTheme.alignment(widget.toastPosition);
-    _dismissOnTap = widget.dismissOnTap ?? (ToastTheme.dismissOnTap ?? false);
-    _ignoring = _dismissOnTap ? false : ToastTheme.ignoring(widget.maskType);
-    _maskColor = ToastTheme.maskColor(widget.maskType);
+    _alignment = SnackbarTheme.alignment(widget.toastPosition);
+    _dismissOnTap = widget.dismissOnTap ?? (SnackbarTheme.dismissOnTap ?? false);
+    _ignoring = _dismissOnTap ? false : SnackbarTheme.ignoring(widget.maskType);
+    _maskColor = SnackbarTheme.maskColor(widget.maskType);
     _animationController = AnimationController(
       vsync: this,
-      duration: ToastTheme.animationDuration,
+      duration: SnackbarTheme.animationDuration,
     )..addStatusListener((status) {
         bool isCompleted = widget.completer?.isCompleted ?? false;
         if (status == AnimationStatus.completed && !isCompleted) {
@@ -145,7 +151,7 @@ class SnackbarContainerState extends State<SnackbarContainer> with SingleTickerP
         AnimatedBuilder(
           animation: _animationController,
           builder: (BuildContext context, Widget? child) {
-            return ToastTheme.loadingAnimation.buildWidget(
+            return SnackbarTheme.loadingAnimation.buildWidget(
               _Indicator(
                 message: _message,
                 title: widget.title,
@@ -154,6 +160,9 @@ class SnackbarContainerState extends State<SnackbarContainer> with SingleTickerP
                 showIcon: widget.showIcon ?? true,
                 type: widget.type,
                 showDivider: widget.showDivider ?? false,
+                backgroundColor: widget.backgroundColor,
+                contentPadding: widget.contentPadding,
+                margin: widget.margin,
               ),
               _animationController,
               _alignment,
@@ -173,6 +182,10 @@ class _Indicator extends StatelessWidget {
   final SnackbarType type;
   final bool showIcon;
   final bool showDivider;
+  final Color? backgroundColor;
+  final EdgeInsets? contentPadding;
+  final EdgeInsets? margin;
+
 
   const _Indicator({
     required this.message,
@@ -182,9 +195,15 @@ class _Indicator extends StatelessWidget {
     required this.type,
     required this.showIcon,
     required this.showDivider,
+    required this.backgroundColor,
+    required this.margin,
+    required this.contentPadding,
   });
 
   Color _getBackgroundColor() {
+    if(backgroundColor!=null){
+      return backgroundColor!;
+    }
     switch (type) {
       case SnackbarType.success:
         return Colors.green;
@@ -213,18 +232,18 @@ class _Indicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(50.0),
+      margin: margin ?? const EdgeInsets.all(50.0),
       constraints: BoxConstraints(
         maxWidth: 400,
       ),
       decoration: BoxDecoration(
         color: _getBackgroundColor(),
         borderRadius: BorderRadius.circular(
-          ToastTheme.radius,
+          SnackbarTheme.radius,
         ),
-        boxShadow: ToastTheme.boxShadow,
+        boxShadow: SnackbarTheme.boxShadow,
       ),
-      padding: ToastTheme.contentPadding,
+      padding: contentPadding ?? SnackbarTheme.contentPadding,
       child: Builder(builder: (context) {
         final content = Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -241,9 +260,9 @@ class _Indicator extends StatelessWidget {
                   style: titleStyle ??
                       TextStyle(
                         color: Colors.white,
-                        fontSize: ToastTheme.fontSize,
+                        fontSize: SnackbarTheme.fontSize,
                       ),
-                  textAlign: ToastTheme.textAlign,
+                  textAlign: SnackbarTheme.textAlign,
                 ),
               ),
             if (title != null && showDivider) Divider(
@@ -258,9 +277,9 @@ class _Indicator extends StatelessWidget {
                 style: messageStyle ??
                     TextStyle(
                       color: Colors.white,
-                      fontSize: ToastTheme.fontSize,
+                      fontSize: SnackbarTheme.fontSize,
                     ),
-                textAlign: ToastTheme.textAlign,
+                textAlign: SnackbarTheme.textAlign,
               ),
             ),
           ],

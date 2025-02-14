@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'snacknload_container.dart';
-import '../animations/animation.dart';
-import '../animations/opacity_animation.dart';
-import '../animations/offset_animation.dart';
-import '../animations/scale_animation.dart';
+import 'package:snacknload/src/animations/animation.dart';
+import 'package:snacknload/src/animations/opacity_animation.dart';
+import 'package:snacknload/src/animations/offset_animation.dart';
+import 'package:snacknload/src/animations/scale_animation.dart';
 import 'enums.dart';
 
 class LoadingTheme {

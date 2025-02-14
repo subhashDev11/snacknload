@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../utility/snacknload_container.dart';
-import './overlay_entry.dart';
+import 'package:snacknload/src/utility/snacknload_container.dart';
+import 'package:snacknload/src/widgets/overlay_entry.dart';
 
 class LoadingWidget extends StatefulWidget {
   final Widget? child;

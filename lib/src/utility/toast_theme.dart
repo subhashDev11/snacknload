@@ -1,54 +1,26 @@
-// The MIT License (MIT)
-//
-// Copyright (c) 2020 nslogx
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-
 import 'package:flutter/material.dart';
-
 import 'snacknload_container.dart';
-import '../animations/animation.dart';
-import '../animations/opacity_animation.dart';
-import '../animations/offset_animation.dart';
-import '../animations/scale_animation.dart';
+import 'package:snacknload/src/animations/animation.dart';
+import 'package:snacknload/src/animations/opacity_animation.dart';
+import 'package:snacknload/src/animations/offset_animation.dart';
+import 'package:snacknload/src/animations/scale_animation.dart';
 import 'enums.dart';
 
-class ToastTheme {
-
+class SnackbarTheme {
   /// boxShadow color of loading
   static List<BoxShadow>? get boxShadow =>
-      SnackNLoad.instance.loadingStyle == LoadingStyle.custom
-          ? SnackNLoad.instance.boxShadow ?? [BoxShadow()]
-          : null;
+      SnackNLoad.instance.loadingStyle == LoadingStyle.custom ? SnackNLoad.instance.boxShadow ?? [BoxShadow()] : null;
 
   /// font color of status
-  static Color get messageColor =>
-      SnackNLoad.instance.loadingStyle == LoadingStyle.custom
-          ? SnackNLoad.instance.textColor!
-          : SnackNLoad.instance.loadingStyle == LoadingStyle.dark
+  static Color get messageColor => SnackNLoad.instance.loadingStyle == LoadingStyle.custom
+      ? SnackNLoad.instance.textColor!
+      : SnackNLoad.instance.loadingStyle == LoadingStyle.dark
           ? Colors.white
           : Colors.black;
 
-  static Color get titleColor =>
-      SnackNLoad.instance.loadingStyle == LoadingStyle.custom
-          ? SnackNLoad.instance.textColor!
-          : SnackNLoad.instance.loadingStyle == LoadingStyle.dark
+  static Color get titleColor => SnackNLoad.instance.loadingStyle == LoadingStyle.custom
+      ? SnackNLoad.instance.textColor!
+      : SnackNLoad.instance.loadingStyle == LoadingStyle.dark
           ? Colors.white
           : Colors.black;
 
@@ -58,8 +30,8 @@ class ToastTheme {
     return maskType == LoadingMaskType.custom
         ? SnackNLoad.instance.maskColor!
         : maskType == LoadingMaskType.black
-        ? Colors.black.withValues(alpha:0.5)
-        : Colors.transparent;
+            ? Colors.black.withValues(alpha: 0.5)
+            : Colors.transparent;
   }
 
   /// loading animation
@@ -86,23 +58,18 @@ class ToastTheme {
   static double get fontSize => SnackNLoad.instance.fontSize;
 
   /// toast position
-  static LoadingToastPosition get toastPosition =>
-      SnackNLoad.instance.toastPosition;
+  static LoadingToastPosition get toastPosition => SnackNLoad.instance.toastPosition;
 
   /// toast position
-  static AlignmentGeometry alignment(LoadingToastPosition? position) =>
-      position == LoadingToastPosition.bottom
-          ? AlignmentDirectional.bottomCenter
-          : (position == LoadingToastPosition.top
-          ? AlignmentDirectional.topCenter
-          : AlignmentDirectional.center);
+  static AlignmentGeometry alignment(LoadingToastPosition? position) => position == LoadingToastPosition.bottom
+      ? AlignmentDirectional.bottomCenter
+      : (position == LoadingToastPosition.top ? AlignmentDirectional.topCenter : AlignmentDirectional.center);
 
   /// display duration
   static Duration get displayDuration => SnackNLoad.instance.displayDuration;
 
   /// animation duration
-  static Duration get animationDuration =>
-      SnackNLoad.instance.animationDuration;
+  static Duration get animationDuration => SnackNLoad.instance.animationDuration;
 
   /// contentPadding of loading
   static EdgeInsets get contentPadding => SnackNLoad.instance.contentPadding;
@@ -118,13 +85,16 @@ class ToastTheme {
 
   /// radius of loading
   static double get radius => SnackNLoad.instance.radius;
+  static Color get successSnackbarBGColor => SnackNLoad.instance.successSnackbarBGColor ?? Colors.green;
+  static Color get errorSnackbarBGColor => SnackNLoad.instance.errorSnackbarBGColor ?? Colors.red;
+  static Color get infoSnackbarBGColor => SnackNLoad.instance.infoSnackbarBGColor ?? Colors.blue;
+  static Color get warningSnackbarBGColor => SnackNLoad.instance.warningSnackbarBGColor ?? Colors.orange;
 
   /// should dismiss on user tap
   static bool? get dismissOnTap => SnackNLoad.instance.dismissOnTap;
 
   static bool ignoring(LoadingMaskType? maskType) {
     maskType ??= SnackNLoad.instance.maskType;
-    return SnackNLoad.instance.userInteractions ??
-        (maskType == LoadingMaskType.none ? true : false);
+    return SnackNLoad.instance.userInteractions ?? (maskType == LoadingMaskType.none ? true : false);
   }
 }

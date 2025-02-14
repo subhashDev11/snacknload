@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:snacknload/src/utility/toast_theme.dart';
 import 'package:snacknload/src/widgets/dialog_container.dart';
-import '../widgets/container.dart';
-import '../widgets/progress.dart';
-import '../widgets/indicator.dart';
-import '../widgets/overlay_entry.dart';
-import '../widgets/loading.dart';
-import '../animations/animation.dart';
+import 'package:snacknload/src/widgets/container.dart';
+import 'package:snacknload/src/widgets/progress.dart';
+import 'package:snacknload/src/widgets/indicator.dart';
+import 'package:snacknload/src/widgets/overlay_entry.dart';
+import 'package:snacknload/src/widgets/loading.dart';
+import 'package:snacknload/src/animations/animation.dart';
 import 'theme.dart';
-import '../widgets/toast_container.dart';
+import 'package:snacknload/src/widgets/snackbar_container.dart';
 import 'enums.dart';
 
 class SnackNLoad {
@@ -104,6 +104,11 @@ class SnackNLoad {
 
   Widget? _w;
 
+  Color? successSnackbarBGColor;
+  Color? errorSnackbarBGColor;
+  Color? infoSnackbarBGColor;
+  Color? warningSnackbarBGColor;
+
   SnackNLoadOverlayEntry? overlayEntry;
   GlobalKey<LoadingContainerState>? _key;
   GlobalKey<LoadingProgressState>? _progressKey;
@@ -141,6 +146,10 @@ class SnackNLoad {
       vertical: 15.0,
       horizontal: 20.0,
     );
+    successSnackbarBGColor = Colors.green;
+    errorSnackbarBGColor = Colors.red;
+    infoSnackbarBGColor = Colors.blue;
+    warningSnackbarBGColor = Colors.orange;
   }
 
   static SnackNLoad get instance => _instance;
@@ -367,16 +376,25 @@ class SnackNLoad {
     TextStyle? titleStyle,
     TextStyle? messageStyle,
     bool? showDivider,
+    EdgeInsets? contentPadding,
+    EdgeInsets? margin,
+    Color? backgroundColor,
   }) {
     return _instance._showSnackbar(
       message: message,
       showIcon: showIcon,
       title: title,
       type: type,
-      duration: duration ?? ToastTheme.displayDuration,
-      toastPosition: toastPosition ?? ToastTheme.toastPosition,
+      showDivider: showDivider,
+      messageStyle: messageStyle,
+      titleStyle: titleStyle,
+      duration: duration ?? SnackbarTheme.displayDuration,
+      toastPosition: toastPosition ?? SnackbarTheme.toastPosition,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
+      margin: margin,
+      contentPadding: contentPadding,
+      backgroundColor: backgroundColor,
     );
   }
 
@@ -518,6 +536,9 @@ class SnackNLoad {
     required SnackbarType type,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
+    EdgeInsets? contentPadding,
+    EdgeInsets? margin,
+    Color? backgroundColor,
   }) async {
     assert(
       overlayEntry != null,
@@ -560,6 +581,9 @@ class SnackNLoad {
       titleStyle: titleStyle,
       messageStyle: messageStyle,
       showDivider: showDivider,
+      backgroundColor: backgroundColor,
+      contentPadding: contentPadding,
+      margin: margin,
     );
     completer.future.whenComplete(() {
       _callback(LoadingStatus.show);
