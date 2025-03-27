@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:snacknload/src/utility/toast_theme.dart';
+import 'package:snacknload/src/utility/snacknload_theme.dart';
 import 'package:snacknload/src/widgets/dialog_container.dart';
-import 'package:snacknload/src/widgets/container.dart';
+import 'package:snacknload/src/widgets/loading_container.dart';
 import 'package:snacknload/src/widgets/progress.dart';
 import 'package:snacknload/src/widgets/indicator.dart';
 import 'package:snacknload/src/widgets/overlay_entry.dart';
 import 'package:snacknload/src/widgets/loading.dart';
 import 'package:snacknload/src/animations/animation.dart';
-import 'theme.dart';
 import 'package:snacknload/src/widgets/snackbar_container.dart';
 import 'enums.dart';
 
@@ -18,16 +17,16 @@ class SnackNLoad {
   late LoadingStyle loadingStyle;
 
   /// loading indicator type, default [SnackNLoadIndicatorType.fadingCircle].
-  late LoadingIndicatorType indicatorType;
+  late IndicatorType indicatorType;
 
-  /// loading mask type, default [LoadingMaskType.none].
-  late LoadingMaskType maskType;
+  /// loading mask type, default [MaskType.none].
+  late MaskType maskType;
 
-  /// toast position, default [LoadingToastPosition.center].
-  late LoadingToastPosition toastPosition;
+  /// toast position, default [Position.center].
+  late Position toastPosition;
 
-  /// loading animationStyle, default [LoadingAnimationStyle.opacity].
-  late LoadingAnimationStyle animationStyle;
+  /// loading animationStyle, default [SnackNLoadAnimationStyle.opacity].
+  late SnackNLoadAnimationStyle animationStyle;
 
   /// textAlign of status, default [TextAlign.center].
   late TextAlign textAlign;
@@ -81,7 +80,7 @@ class SnackNLoad {
   /// boxShadow of loading, only used for [SnackNLoadStyle.custom].
   List<BoxShadow>? boxShadow;
 
-  /// mask color of loading, only used for [LoadingMaskType.custom].
+  /// mask color of loading, only used for [MaskType.custom].
   Color? maskColor;
 
   /// should allow user interactions while loading is displayed.
@@ -128,10 +127,10 @@ class SnackNLoad {
   SnackNLoad._internal() {
     /// set deafult value
     loadingStyle = LoadingStyle.dark;
-    indicatorType = LoadingIndicatorType.fadingCircle;
-    maskType = LoadingMaskType.none;
-    toastPosition = LoadingToastPosition.center;
-    animationStyle = LoadingAnimationStyle.opacity;
+    indicatorType = IndicatorType.fadingCircle;
+    maskType = MaskType.none;
+    toastPosition = Position.center;
+    animationStyle = SnackNLoadAnimationStyle.opacity;
     textAlign = TextAlign.center;
     toastTextAlign = TextAlign.start;
     indicatorSize = 40.0;
@@ -173,7 +172,7 @@ class SnackNLoad {
   static Future<void> show({
     String? status,
     Widget? indicator,
-    LoadingMaskType? maskType,
+    MaskType? maskType,
     bool? dismissOnTap,
   }) {
     Widget w = indicator ?? (_instance.indicatorWidget ?? LoadingIndicator());
@@ -189,7 +188,7 @@ class SnackNLoad {
   static Future<void> showProgress(
     double value, {
     String? status,
-    LoadingMaskType? maskType,
+    MaskType? maskType,
   }) async {
     assert(
       value >= 0.0 && value <= 1.0,
@@ -228,18 +227,18 @@ class SnackNLoad {
   static Future<void> showSuccess(
     String status, {
     Duration? duration,
-    LoadingMaskType? maskType,
+    MaskType? maskType,
     bool? dismissOnTap,
   }) {
     Widget w = _instance.successWidget ??
         Icon(
           Icons.done,
-          color: LoadingTheme.indicatorColor,
-          size: LoadingTheme.indicatorSize,
+          color: SnackNLoadTheme.indicatorColor,
+          size: SnackNLoadTheme.indicatorSize,
         );
     return _instance._show(
       status: status,
-      duration: duration ?? LoadingTheme.displayDuration,
+      duration: duration ?? SnackNLoadTheme.displayDuration,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       w: w,
@@ -252,7 +251,7 @@ class SnackNLoad {
     String? title,
     TextStyle? titleStyle,
     bool? dismissOnTap,
-    LoadingMaskType? maskType,
+    MaskType? maskType,
     bool? useAdaptive,
     ShapeBorder? shape,
     List<Widget>? actions,
@@ -263,14 +262,14 @@ class SnackNLoad {
     );
 
     maskType ??= _instance.maskType;
-    if (maskType == LoadingMaskType.custom) {
+    if (maskType == MaskType.custom) {
       assert(
         maskColor != null,
         'while mask type is custom, maskColor should not be null',
       );
     }
 
-    if (animationStyle == LoadingAnimationStyle.custom) {
+    if (animationStyle == SnackNLoadAnimationStyle.custom) {
       assert(
         customAnimation != null,
         'while animationStyle is custom, customAnimation should not be null',
@@ -306,18 +305,18 @@ class SnackNLoad {
   static Future<void> showError(
     String status, {
     Duration? duration,
-    LoadingMaskType? maskType,
+    MaskType? maskType,
     bool? dismissOnTap,
   }) {
     Widget w = _instance.errorWidget ??
         Icon(
           Icons.clear,
-          color: LoadingTheme.indicatorColor,
-          size: LoadingTheme.indicatorSize,
+          color: SnackNLoadTheme.indicatorColor,
+          size: SnackNLoadTheme.indicatorSize,
         );
     return _instance._show(
       status: status,
-      duration: duration ?? LoadingTheme.displayDuration,
+      duration: duration ?? SnackNLoadTheme.displayDuration,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       w: w,
@@ -328,18 +327,18 @@ class SnackNLoad {
   static Future<void> showInfo(
     String status, {
     Duration? duration,
-    LoadingMaskType? maskType,
+    MaskType? maskType,
     bool? dismissOnTap,
   }) {
     Widget w = _instance.infoWidget ??
         Icon(
           Icons.info_outline,
-          color: LoadingTheme.indicatorColor,
-          size: LoadingTheme.indicatorSize,
+          color: SnackNLoadTheme.indicatorColor,
+          size: SnackNLoadTheme.indicatorSize,
         );
     return _instance._show(
       status: status,
-      duration: duration ?? LoadingTheme.displayDuration,
+      duration: duration ?? SnackNLoadTheme.displayDuration,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       w: w,
@@ -350,14 +349,14 @@ class SnackNLoad {
   static Future<void> showToast(
     String status, {
     Duration? duration,
-    LoadingToastPosition? toastPosition,
-    LoadingMaskType? maskType,
+    Position? toastPosition,
+    MaskType? maskType,
     bool? dismissOnTap,
   }) {
     return _instance._show(
       status: status,
-      duration: duration ?? LoadingTheme.displayDuration,
-      toastPosition: toastPosition ?? LoadingTheme.toastPosition,
+      duration: duration ?? SnackNLoadTheme.displayDuration,
+      toastPosition: toastPosition ?? SnackNLoadTheme.toastPosition,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
     );
@@ -367,12 +366,11 @@ class SnackNLoad {
   static Future<void> showSnackBar(
     String message, {
     Duration? duration,
-    LoadingToastPosition? toastPosition,
-    LoadingMaskType? maskType,
+    Position? toastPosition,
+    MaskType? maskType,
     bool? dismissOnTap,
     bool? showIcon,
-    String? title,
-    required SnackbarType type,
+    String? title, Type? type,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
     bool? showDivider,
@@ -384,12 +382,12 @@ class SnackNLoad {
       message: message,
       showIcon: showIcon,
       title: title,
-      type: type,
+      type: type ?? Type.info,
       showDivider: showDivider,
       messageStyle: messageStyle,
       titleStyle: titleStyle,
-      duration: duration ?? SnackbarTheme.displayDuration,
-      toastPosition: toastPosition ?? SnackbarTheme.toastPosition,
+      duration: duration ?? SnackNLoadTheme.displayDuration,
+      toastPosition: toastPosition ?? SnackNLoadTheme.toastPosition,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       margin: margin,
@@ -405,7 +403,7 @@ class SnackNLoad {
     String? title,
     TextStyle? titleStyle,
     bool? dismissOnTap,
-    LoadingMaskType? maskType,
+    MaskType? maskType,
     bool? useAdaptive,
     List<Widget>? actions,
   }) {
@@ -454,9 +452,9 @@ class SnackNLoad {
     Widget? w,
     String? status,
     Duration? duration,
-    LoadingMaskType? maskType,
+    MaskType? maskType,
     bool? dismissOnTap,
-    LoadingToastPosition? toastPosition,
+    Position? toastPosition,
   }) async {
     assert(
       overlayEntry != null,
@@ -479,21 +477,21 @@ class SnackNLoad {
     }
 
     maskType ??= _instance.maskType;
-    if (maskType == LoadingMaskType.custom) {
+    if (maskType == MaskType.custom) {
       assert(
         maskColor != null,
         'while mask type is custom, maskColor should not be null',
       );
     }
 
-    if (animationStyle == LoadingAnimationStyle.custom) {
+    if (animationStyle == SnackNLoadAnimationStyle.custom) {
       assert(
         customAnimation != null,
         'while animationStyle is custom, customAnimation should not be null',
       );
     }
 
-    toastPosition ??= LoadingToastPosition.center;
+    toastPosition ??= Position.center;
     bool animation = _w == null;
     _progressKey = null;
     if (_key != null) await dismiss(animation: false);
@@ -527,13 +525,13 @@ class SnackNLoad {
   Future<void> _showSnackbar({
     required String message,
     Duration? duration,
-    LoadingMaskType? maskType,
+    MaskType? maskType,
     bool? dismissOnTap,
     bool? showIcon,
     bool? showDivider,
     String? title,
-    LoadingToastPosition? toastPosition,
-    required SnackbarType type,
+    Position? toastPosition,
+    required Type type,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
     EdgeInsets? contentPadding,
@@ -546,21 +544,21 @@ class SnackNLoad {
     );
 
     maskType ??= _instance.maskType;
-    if (maskType == LoadingMaskType.custom) {
+    if (maskType == MaskType.custom) {
       assert(
         maskColor != null,
         'while mask type is custom, maskColor should not be null',
       );
     }
 
-    if (animationStyle == LoadingAnimationStyle.custom) {
+    if (animationStyle == SnackNLoadAnimationStyle.custom) {
       assert(
         customAnimation != null,
         'while animationStyle is custom, customAnimation should not be null',
       );
     }
 
-    toastPosition ??= LoadingToastPosition.center;
+    toastPosition ??= Position.center;
     bool animation = _w == null;
     _progressKey = null;
     if (_key != null) await dismiss(animation: false);

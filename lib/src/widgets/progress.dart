@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:snacknload/src/utility/snacknload_theme.dart';
 
-import '../utility/theme.dart';
 
 class LoadingProgress extends StatefulWidget {
   final double value;
@@ -39,12 +39,12 @@ class LoadingProgressState extends State<LoadingProgress> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: LoadingTheme.indicatorSize,
-      height: LoadingTheme.indicatorSize,
+      width: SnackNLoadTheme.indicatorSize,
+      height: SnackNLoadTheme.indicatorSize,
       child: _CircleProgress(
         value: _value,
-        color: LoadingTheme.progressColor,
-        width: LoadingTheme.progressWidth,
+        color: SnackNLoadTheme.progressColor,
+        width: SnackNLoadTheme.progressWidth,
       ),
     );
   }

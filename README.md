@@ -52,7 +52,7 @@ void main() {
 void configLoading() {
   SnackNLoad.instance
     ..displayDuration = const Duration(milliseconds: 2000)
-    ..indicatorType = LoadingIndicatorType.fadingCircle
+    ..indicatorType = IndicatorType.fadingCircle
     ..loadingStyle = LoadingStyle.dark
     ..indicatorSize = 45.0
     ..radius = 10.0
@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
 #### Show a Loading Indicator
 
 ```dart
-SnackNLoad.show(status: 'Loading...', maskType: LoadingMaskType.black);
+SnackNLoad.show(status: 'Loading...', maskType: MaskType.black);
 ```
 
 #### Dismiss the Loading Indicator
@@ -131,7 +131,7 @@ SnackNLoad.showSnackBar(
   type: ToastType.success,
   title: "Hello",
   showIcon: false,
-  toastPosition: LoadingToastPosition.top,
+  toastPosition: Position.top,
 );
 ```
 
@@ -173,7 +173,7 @@ SnackNLoad.instance.loadingStyle = LoadingStyle.dark;
 Set toast position to top, center, or bottom:
 
 ```dart
-SnackNLoad.instance.toastPosition = LoadingToastPosition.top;
+SnackNLoad.instance.toastPosition = Position.top;
 ```
 
 ### Indicator Types
@@ -181,7 +181,7 @@ SnackNLoad.instance.toastPosition = LoadingToastPosition.top;
 Switch between various indicator types:
 
 ```dart
-SnackNLoad.instance.indicatorType = LoadingIndicatorType.wave;
+SnackNLoad.instance.indicatorType = IndicatorType.wave;
 ```
 
 ### Mask Types
@@ -189,7 +189,7 @@ SnackNLoad.instance.indicatorType = LoadingIndicatorType.wave;
 Control user interactions during loading:
 
 ```dart
-SnackNLoad.instance.maskType = LoadingMaskType.black;
+SnackNLoad.instance.maskType = MaskType.black;
 ```
 
 ## Example Application

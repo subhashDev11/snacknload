@@ -1,6 +1,6 @@
 import 'package:snacknload/src/utility/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:snacknload/src/utility/theme.dart';
+import 'package:snacknload/src/utility/snacknload_theme.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingIndicator extends StatefulWidget {
@@ -13,9 +13,9 @@ class LoadingIndicator extends StatefulWidget {
 }
 
 class LoadingIndicatorState extends State<LoadingIndicator> {
-  final double _size = LoadingTheme.indicatorSize;
+  final double _size = SnackNLoadTheme.indicatorSize;
 
-  final Color _indicatorColor = LoadingTheme.indicatorColor;
+  final Color _indicatorColor = SnackNLoadTheme.indicatorColor;
   late Widget _indicator;
 
   @override
@@ -31,33 +31,33 @@ class LoadingIndicatorState extends State<LoadingIndicator> {
   @override
   Widget build(BuildContext context) {
     double width = _size;
-    switch (LoadingTheme.indicatorType) {
-      case LoadingIndicatorType.fadingCircle:
+    switch (SnackNLoadTheme.indicatorType) {
+      case IndicatorType.fadingCircle:
         _indicator = SpinKitFadingCircle(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.circle:
+      case IndicatorType.circle:
         _indicator = SpinKitCircle(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.threeBounce:
+      case IndicatorType.threeBounce:
         _indicator = SpinKitThreeBounce(
           color: _indicatorColor,
           size: _size,
         );
         width = _size * 2;
         break;
-      case LoadingIndicatorType.chasingDots:
+      case IndicatorType.chasingDots:
         _indicator = SpinKitChasingDots(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.wave:
+      case IndicatorType.wave:
         _indicator = SpinKitWave(
           color: _indicatorColor,
           size: _size,
@@ -65,111 +65,111 @@ class LoadingIndicatorState extends State<LoadingIndicator> {
         );
         width = _size * 1.25;
         break;
-      case LoadingIndicatorType.wanderingCubes:
+      case IndicatorType.wanderingCubes:
         _indicator = SpinKitWanderingCubes(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.rotatingCircle:
+      case IndicatorType.rotatingCircle:
         _indicator = SpinKitRotatingCircle(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.rotatingPlain:
+      case IndicatorType.rotatingPlain:
         _indicator = SpinKitRotatingPlain(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.doubleBounce:
+      case IndicatorType.doubleBounce:
         _indicator = SpinKitDoubleBounce(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.fadingFour:
+      case IndicatorType.fadingFour:
         _indicator = SpinKitFadingFour(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.fadingCube:
+      case IndicatorType.fadingCube:
         _indicator = SpinKitFadingCube(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.pulse:
+      case IndicatorType.pulse:
         _indicator = SpinKitPulse(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.cubeGrid:
+      case IndicatorType.cubeGrid:
         _indicator = SpinKitCubeGrid(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.foldingCube:
+      case IndicatorType.foldingCube:
         _indicator = SpinKitFoldingCube(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.pumpingHeart:
+      case IndicatorType.pumpingHeart:
         _indicator = SpinKitPumpingHeart(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.dualRing:
+      case IndicatorType.dualRing:
         _indicator = SpinKitDualRing(
           color: _indicatorColor,
           size: _size,
-          lineWidth: LoadingTheme.lineWidth,
+          lineWidth: SnackNLoadTheme.lineWidth,
         );
         break;
-      case LoadingIndicatorType.hourGlass:
+      case IndicatorType.hourGlass:
         _indicator = SpinKitHourGlass(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.pouringHourGlass:
+      case IndicatorType.pouringHourGlass:
         _indicator = SpinKitPouringHourGlass(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.fadingGrid:
+      case IndicatorType.fadingGrid:
         _indicator = SpinKitFadingGrid(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.ring:
+      case IndicatorType.ring:
         _indicator = SpinKitRing(
           color: _indicatorColor,
           size: _size,
-          lineWidth: LoadingTheme.lineWidth,
+          lineWidth: SnackNLoadTheme.lineWidth,
         );
         break;
-      case LoadingIndicatorType.ripple:
+      case IndicatorType.ripple:
         _indicator = SpinKitRipple(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.spinningCircle:
+      case IndicatorType.spinningCircle:
         _indicator = SpinKitSpinningCircle(
           color: _indicatorColor,
           size: _size,
         );
         break;
-      case LoadingIndicatorType.squareCircle:
+      case IndicatorType.squareCircle:
         _indicator = SpinKitSquareCircle(
           color: _indicatorColor,
           size: _size,

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:snacknload/src/utility/enums.dart';
 import 'package:snacknload/src/utility/snacknload_container.dart';
-import 'package:snacknload/src/utility/theme.dart';
+import 'package:snacknload/src/utility/snacknload_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -11,8 +11,8 @@ class LoadingContainer extends StatefulWidget {
   final Widget? indicator;
   final String? status;
   final bool? dismissOnTap;
-  final LoadingToastPosition? toastPosition;
-  final LoadingMaskType? maskType;
+  final Position? toastPosition;
+  final MaskType? maskType;
   final Completer<void>? completer;
   final bool animation;
 
@@ -31,18 +31,15 @@ class LoadingContainer extends StatefulWidget {
   LoadingContainerState createState() => LoadingContainerState();
 }
 
-class LoadingContainerState extends State<LoadingContainer>
-    with SingleTickerProviderStateMixin {
+class LoadingContainerState extends State<LoadingContainer> with SingleTickerProviderStateMixin {
   String? _status;
   Color? _maskColor;
   late AnimationController _animationController;
   late AlignmentGeometry _alignment;
   late bool _dismissOnTap, _ignoring;
 
-  //https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0
   bool get isPersistentCallbacks =>
-      _ambiguate(SchedulerBinding.instance)!.schedulerPhase ==
-      SchedulerPhase.persistentCallbacks;
+      _ambiguate(SchedulerBinding.instance)!.schedulerPhase == SchedulerPhase.persistentCallbacks;
 
   @override
   void initState() {
@@ -50,16 +47,16 @@ class LoadingContainerState extends State<LoadingContainer>
     if (!mounted) return;
     _status = widget.status;
     _alignment = (widget.indicator == null && widget.status?.isNotEmpty == true)
-        ? LoadingTheme.alignment(widget.toastPosition)
+        ? SnackNLoadTheme.alignment(
+            widget.toastPosition ?? Position.top,
+          )
         : AlignmentDirectional.center;
-    _dismissOnTap =
-        widget.dismissOnTap ?? (LoadingTheme.dismissOnTap ?? false);
-    _ignoring =
-        _dismissOnTap ? false : LoadingTheme.ignoring(widget.maskType);
-    _maskColor = LoadingTheme.maskColor(widget.maskType);
+    _dismissOnTap = widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
+    _ignoring = _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
+    _maskColor = SnackNLoadTheme.maskColor(widget.maskType);
     _animationController = AnimationController(
       vsync: this,
-      duration: LoadingTheme.animationDuration,
+      duration: SnackNLoadTheme.animationDuration,
     )..addStatusListener((status) {
         bool isCompleted = widget.completer?.isCompleted ?? false;
         if (status == AnimationStatus.completed && !isCompleted) {
@@ -78,9 +75,8 @@ class LoadingContainerState extends State<LoadingContainer>
   Future<void> show(bool animation) {
     if (isPersistentCallbacks) {
       Completer<dynamic> completer = Completer<void>();
-      _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((_) =>
-          completer
-              .complete(_animationController.forward(from: animation ? 0 : 1)));
+      _ambiguate(SchedulerBinding.instance)!
+          .addPostFrameCallback((_) => completer.complete(_animationController.forward(from: animation ? 0 : 1)));
       return completer.future;
     } else {
       return _animationController.forward(from: animation ? 0 : 1);
@@ -90,9 +86,8 @@ class LoadingContainerState extends State<LoadingContainer>
   Future<void> dismiss(bool animation) {
     if (isPersistentCallbacks) {
       Completer<dynamic> completer = Completer<void>();
-      _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((_) =>
-          completer
-              .complete(_animationController.reverse(from: animation ? 1 : 0)));
+      _ambiguate(SchedulerBinding.instance)!
+          .addPostFrameCallback((_) => completer.complete(_animationController.reverse(from: animation ? 1 : 0)));
       return completer.future;
     } else {
       return _animationController.reverse(from: animation ? 1 : 0);
@@ -144,7 +139,7 @@ class LoadingContainerState extends State<LoadingContainer>
         AnimatedBuilder(
           animation: _animationController,
           builder: (BuildContext context, Widget? child) {
-            return LoadingTheme.loadingAnimation.buildWidget(
+            return SnackNLoadTheme.loadingAnimation.buildWidget(
               _Indicator(
                 status: _status,
                 indicator: widget.indicator,
@@ -173,13 +168,13 @@ class _Indicator extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(50.0),
       decoration: BoxDecoration(
-        color: LoadingTheme.backgroundColor,
+        color: SnackNLoadTheme.backgroundColor,
         borderRadius: BorderRadius.circular(
-          LoadingTheme.radius,
+          SnackNLoadTheme.radius,
         ),
-        boxShadow: LoadingTheme.boxShadow,
+        boxShadow: SnackNLoadTheme.boxShadow,
       ),
-      padding: LoadingTheme.contentPadding,
+      padding: SnackNLoadTheme.contentPadding,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -187,20 +182,18 @@ class _Indicator extends StatelessWidget {
         children: <Widget>[
           if (indicator != null)
             Container(
-              margin: status?.isNotEmpty == true
-                  ? LoadingTheme.textPadding
-                  : EdgeInsets.zero,
+              margin: status?.isNotEmpty == true ? SnackNLoadTheme.textPadding : EdgeInsets.zero,
               child: indicator,
             ),
           if (status != null)
             Text(
               status!,
-              style: LoadingTheme.textStyle ??
+              style: SnackNLoadTheme.textStyle ??
                   TextStyle(
-                    color: LoadingTheme.textColor,
-                    fontSize: LoadingTheme.fontSize,
+                    color: SnackNLoadTheme.textColor,
+                    fontSize: SnackNLoadTheme.fontSize,
                   ),
-              textAlign: LoadingTheme.textAlign,
+              textAlign: SnackNLoadTheme.textAlign,
             ),
         ],
       ),

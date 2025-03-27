@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:snacknload/src/utility/enums.dart';
 import 'package:snacknload/src/utility/snacknload_container.dart';
-import 'package:snacknload/src/utility/theme.dart';
+import 'package:snacknload/src/utility/snacknload_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -13,7 +13,7 @@ class DialogContainer extends StatefulWidget {
   final String? title;
   final TextStyle? titleStyle;
   final bool? dismissOnTap;
-  final LoadingMaskType? maskType;
+  final MaskType? maskType;
   final Completer<void>? completer;
   final bool animation;
   final bool useAdaptive;
@@ -54,12 +54,12 @@ class DialogContainerState extends State<DialogContainer> with SingleTickerProvi
     super.initState();
     if (!mounted) return;
     _alignment = AlignmentDirectional.center;
-    _dismissOnTap = widget.dismissOnTap ?? (LoadingTheme.dismissOnTap ?? false);
-    _ignoring = _dismissOnTap ? false : LoadingTheme.ignoring(widget.maskType);
-    _maskColor = LoadingTheme.maskColor(widget.maskType);
+    _dismissOnTap = widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
+    _ignoring = _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
+    _maskColor = SnackNLoadTheme.maskColor(widget.maskType);
     _animationController = AnimationController(
       vsync: this,
-      duration: LoadingTheme.animationDuration,
+      duration: SnackNLoadTheme.animationDuration,
     )..addStatusListener((status) {
         bool isCompleted = widget.completer?.isCompleted ?? false;
         if (status == AnimationStatus.completed && !isCompleted) {
@@ -135,7 +135,7 @@ class DialogContainerState extends State<DialogContainer> with SingleTickerProvi
         AnimatedBuilder(
           animation: _animationController,
           builder: (BuildContext context, Widget? child) {
-            return LoadingTheme.loadingAnimation.buildWidget(
+            return SnackNLoadTheme.loadingAnimation.buildWidget(
               DialogWidget(
                 useAdaptive: widget.useAdaptive,
                 title: widget.title,
@@ -182,7 +182,7 @@ class DialogWidget extends StatelessWidget {
         shape: shape ??
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-                LoadingTheme.radius,
+                SnackNLoadTheme.radius,
               ),
             ),
         title: Text(
@@ -198,7 +198,7 @@ class DialogWidget extends StatelessWidget {
       shape: shape ??
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
-              LoadingTheme.radius,
+              SnackNLoadTheme.radius,
             ),
           ),
       title: Text(

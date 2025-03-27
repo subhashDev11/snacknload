@@ -12,7 +12,7 @@ void main() {
 void configLoading() {
   SnackNLoad.instance
     ..displayDuration = const Duration(milliseconds: 2000)
-    ..indicatorType = LoadingIndicatorType.fadingCircle
+    ..indicatorType = IndicatorType.fadingCircle
     ..loadingStyle = LoadingStyle.dark
     ..indicatorSize = 45.0
     ..radius = 10.0
@@ -100,7 +100,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                       _timer?.cancel();
                       await SnackNLoad.show(
                         status: 'loading...',
-                        maskType: LoadingMaskType.black,
+                        maskType: MaskType.black,
                       );
                     },
                   ),
@@ -119,9 +119,9 @@ class _MyHomePageState extends State<_MyHomePage> {
                       _timer?.cancel();
                       SnackNLoad.showSnackBar(
                         'Welcome in year 2025!\nMay this year will full fill your all dreams and provide you happiness moment',
-                        type: SnackbarType.success,
+                        type: Type.success,
                         showIcon: true,
-                        toastPosition: LoadingToastPosition.top,
+                        toastPosition: Position.top,
                       );
                     },
                   ),
@@ -233,22 +233,22 @@ class _MyHomePageState extends State<_MyHomePage> {
                     Text('Mask Type'),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                      child: CupertinoSegmentedControl<LoadingMaskType>(
+                      child: CupertinoSegmentedControl<MaskType>(
                         selectedColor: Colors.blue,
                         children: {
-                          LoadingMaskType.none: Padding(
+                          MaskType.none: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('none'),
                           ),
-                          LoadingMaskType.clear: Padding(
+                          MaskType.clear: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('clear'),
                           ),
-                          LoadingMaskType.black: Padding(
+                          MaskType.black: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('black'),
                           ),
-                          LoadingMaskType.custom: Padding(
+                          MaskType.custom: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('custom'),
                           ),
@@ -276,18 +276,18 @@ class _MyHomePageState extends State<_MyHomePage> {
                     Text('Toast Position'),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                      child: CupertinoSegmentedControl<LoadingToastPosition>(
+                      child: CupertinoSegmentedControl<Position>(
                         selectedColor: Colors.blue,
                         children: {
-                          LoadingToastPosition.top: Padding(
+                          Position.top: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('top'),
                           ),
-                          LoadingToastPosition.center: Padding(
+                          Position.center: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('center'),
                           ),
-                          LoadingToastPosition.bottom: Padding(
+                          Position.bottom: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('bottom'),
                           ),
@@ -315,22 +315,22 @@ class _MyHomePageState extends State<_MyHomePage> {
                     Text('Animation Style'),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                      child: CupertinoSegmentedControl<LoadingAnimationStyle>(
+                      child: CupertinoSegmentedControl<SnackNLoadAnimationStyle>(
                         selectedColor: Colors.blue,
                         children: {
-                          LoadingAnimationStyle.opacity: Padding(
+                          SnackNLoadAnimationStyle.opacity: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('opacity'),
                           ),
-                          LoadingAnimationStyle.offset: Padding(
+                          SnackNLoadAnimationStyle.offset: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('offset'),
                           ),
-                          LoadingAnimationStyle.scale: Padding(
+                          SnackNLoadAnimationStyle.scale: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('scale'),
                           ),
-                          LoadingAnimationStyle.custom: Padding(
+                          SnackNLoadAnimationStyle.custom: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('custom'),
                           ),
@@ -358,30 +358,30 @@ class _MyHomePageState extends State<_MyHomePage> {
                     Text('IndicatorType(total: 23)'),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                      child: CupertinoSegmentedControl<LoadingIndicatorType>(
+                      child: CupertinoSegmentedControl<IndicatorType>(
                         selectedColor: Colors.blue,
                         children: {
-                          LoadingIndicatorType.circle: Padding(
+                          IndicatorType.circle: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('circle'),
                           ),
-                          LoadingIndicatorType.wave: Padding(
+                          IndicatorType.wave: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('wave'),
                           ),
-                          LoadingIndicatorType.ring: Padding(
+                          IndicatorType.ring: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('ring'),
                           ),
-                          LoadingIndicatorType.pulse: Padding(
+                          IndicatorType.pulse: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('pulse'),
                           ),
-                          LoadingIndicatorType.cubeGrid: Padding(
+                          IndicatorType.cubeGrid: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('cubeGrid'),
                           ),
-                          LoadingIndicatorType.threeBounce: Padding(
+                          IndicatorType.threeBounce: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('threeBounce'),
                           ),

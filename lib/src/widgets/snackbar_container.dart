@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:snacknload/src/utility/enums.dart';
 import 'package:snacknload/src/utility/snacknload_container.dart';
-import 'package:snacknload/src/utility/toast_theme.dart';
+import 'package:snacknload/src/utility/snacknload_theme.dart';
 
 T? _ambiguate<T>(T? value) => value;
 
@@ -11,11 +11,11 @@ class SnackbarContainer extends StatefulWidget {
   final String message;
   final String? title;
   final bool? dismissOnTap;
-  final LoadingToastPosition? toastPosition;
-  final LoadingMaskType? maskType;
+  final Position? toastPosition;
+  final MaskType? maskType;
   final Completer<void>? completer;
   final bool animation;
-  final SnackbarType type;
+  final Type type;
   final TextStyle? titleStyle;
   final TextStyle? messageStyle;
   final bool? showIcon;
@@ -62,13 +62,15 @@ class SnackbarContainerState extends State<SnackbarContainer> with SingleTickerP
     super.initState();
     if (!mounted) return;
     _message = widget.message;
-    _alignment = SnackbarTheme.alignment(widget.toastPosition);
-    _dismissOnTap = widget.dismissOnTap ?? (SnackbarTheme.dismissOnTap ?? false);
-    _ignoring = _dismissOnTap ? false : SnackbarTheme.ignoring(widget.maskType);
-    _maskColor = SnackbarTheme.maskColor(widget.maskType);
+    _alignment = SnackNLoadTheme.alignment(
+      widget.toastPosition ?? Position.top,
+    );
+    _dismissOnTap = widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
+    _ignoring = _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
+    _maskColor = SnackNLoadTheme.maskColor(widget.maskType);
     _animationController = AnimationController(
       vsync: this,
-      duration: SnackbarTheme.animationDuration,
+      duration: SnackNLoadTheme.animationDuration,
     )..addStatusListener((status) {
         bool isCompleted = widget.completer?.isCompleted ?? false;
         if (status == AnimationStatus.completed && !isCompleted) {
@@ -151,7 +153,7 @@ class SnackbarContainerState extends State<SnackbarContainer> with SingleTickerP
         AnimatedBuilder(
           animation: _animationController,
           builder: (BuildContext context, Widget? child) {
-            return SnackbarTheme.loadingAnimation.buildWidget(
+            return SnackNLoadTheme.loadingAnimation.buildWidget(
               _Indicator(
                 message: _message,
                 title: widget.title,
@@ -179,13 +181,12 @@ class _Indicator extends StatelessWidget {
   final String? title;
   final TextStyle? titleStyle;
   final TextStyle? messageStyle;
-  final SnackbarType type;
+  final Type type;
   final bool showIcon;
   final bool showDivider;
   final Color? backgroundColor;
   final EdgeInsets? contentPadding;
   final EdgeInsets? margin;
-
 
   const _Indicator({
     required this.message,
@@ -201,28 +202,28 @@ class _Indicator extends StatelessWidget {
   });
 
   Color _getBackgroundColor() {
-    if(backgroundColor!=null){
+    if (backgroundColor != null) {
       return backgroundColor!;
     }
     switch (type) {
-      case SnackbarType.success:
+      case Type.success:
         return Colors.green;
-      case SnackbarType.error:
+      case Type.error:
         return Colors.red;
-      case SnackbarType.warning:
+      case Type.warning:
         return Colors.orange;
-      case SnackbarType.info:
+      case Type.info:
         return Colors.blue;
     }
   }
 
   IconData _getIcon() {
     switch (type) {
-      case SnackbarType.success:
+      case Type.success:
         return Icons.check_circle;
-      case SnackbarType.error:
+      case Type.error:
         return Icons.error;
-      case SnackbarType.warning:
+      case Type.warning:
         return Icons.warning;
       default:
         return Icons.info;
@@ -239,11 +240,11 @@ class _Indicator extends StatelessWidget {
       decoration: BoxDecoration(
         color: _getBackgroundColor(),
         borderRadius: BorderRadius.circular(
-          SnackbarTheme.radius,
+          SnackNLoadTheme.radius,
         ),
-        boxShadow: SnackbarTheme.boxShadow,
+        boxShadow: SnackNLoadTheme.boxShadow,
       ),
-      padding: contentPadding ?? SnackbarTheme.contentPadding,
+      padding: contentPadding ?? SnackNLoadTheme.contentPadding,
       child: Builder(builder: (context) {
         final content = Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -260,14 +261,15 @@ class _Indicator extends StatelessWidget {
                   style: titleStyle ??
                       TextStyle(
                         color: Colors.white,
-                        fontSize: SnackbarTheme.fontSize,
+                        fontSize: SnackNLoadTheme.fontSize,
                       ),
-                  textAlign: SnackbarTheme.textAlign,
+                  textAlign: SnackNLoadTheme.textAlign,
                 ),
               ),
-            if (title != null && showDivider) Divider(
-              color: Colors.white,
-            ),
+            if (title != null && showDivider)
+              Divider(
+                color: Colors.white,
+              ),
             Padding(
               padding: const EdgeInsets.only(
                 left: 5,
@@ -277,9 +279,9 @@ class _Indicator extends StatelessWidget {
                 style: messageStyle ??
                     TextStyle(
                       color: Colors.white,
-                      fontSize: SnackbarTheme.fontSize,
+                      fontSize: SnackNLoadTheme.fontSize,
                     ),
-                textAlign: SnackbarTheme.textAlign,
+                textAlign: SnackNLoadTheme.textAlign,
               ),
             ),
           ],

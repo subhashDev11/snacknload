@@ -1,8 +1,5 @@
-/// Toast type
-enum ToastType { info, success, error, warning }
-
-/// Snackbar type
-enum SnackbarType { info, success, error, warning }
+/// Toast/Snackbar type
+enum Type { info, success, error, warning }
 
 /// Loading style
 enum LoadingStyle {
@@ -11,15 +8,15 @@ enum LoadingStyle {
   custom,
 }
 
-/// Toast position
-enum LoadingToastPosition {
+/// Toast/Snackbar position
+enum Position {
   top,
   center,
   bottom,
 }
 
 /// Loading animation
-enum LoadingAnimationStyle {
+enum SnackNLoadAnimationStyle {
   opacity,
   offset,
   scale,
@@ -31,7 +28,7 @@ enum LoadingAnimationStyle {
 /// [clear] don't allow user interactions while loading is displayed
 /// [black] don't allow user interactions while loading is displayed
 /// [custom] while mask type is custom, maskColor should not be null
-enum LoadingMaskType {
+enum MaskType {
   none,
   clear,
   black,
@@ -39,7 +36,7 @@ enum LoadingMaskType {
 }
 
 /// Loading indicator type. see [https://github.com/jogboms/flutter_spinkit#-showcase]
-enum LoadingIndicatorType {
+enum IndicatorType {
   fadingCircle,
   circle,
   threeBounce,
