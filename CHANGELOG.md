@@ -26,4 +26,7 @@
 ### Default Values Updated
 - **Snackbar type:** `Info`
 - **Snackbar position:** `Top`
-- **Toast position:** `Top`  
+- **Toast position:** `Top`
+
+## 1.0.7
+* Code formating and pub score related changes

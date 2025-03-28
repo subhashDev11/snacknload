@@ -201,19 +201,19 @@ class _Indicator extends StatelessWidget {
     required this.contentPadding,
   });
 
-  Color _getBackgroundColor() {
+  Color _getBackgroundColor(ThemeData theme) {
     if (backgroundColor != null) {
       return backgroundColor!;
     }
     switch (type) {
       case Type.success:
-        return Colors.green;
+        return SnackNLoadTheme.successContainerColor;
       case Type.error:
-        return Colors.red;
+        return SnackNLoadTheme.errorContainerColor;
       case Type.warning:
-        return Colors.orange;
+        return SnackNLoadTheme.warningContainerColor;
       case Type.info:
-        return Colors.blue;
+        return theme.primaryColor;
     }
   }
 
@@ -238,7 +238,7 @@ class _Indicator extends StatelessWidget {
         maxWidth: 400,
       ),
       decoration: BoxDecoration(
-        color: _getBackgroundColor(),
+        color: _getBackgroundColor(Theme.of(context)),
         borderRadius: BorderRadius.circular(
           SnackNLoadTheme.radius,
         ),

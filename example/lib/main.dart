@@ -121,7 +121,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                         'Welcome in year 2025!\nMay this year will full fill your all dreams and provide you happiness moment',
                         type: Type.success,
                         showIcon: true,
-                        toastPosition: Position.top,
+                        position: Position.top,
                       );
                     },
                   ),
@@ -293,7 +293,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                           ),
                         },
                         onValueChanged: (value) {
-                          SnackNLoad.instance.toastPosition = value;
+                          SnackNLoad.instance.position = value;
                         },
                       ),
                     ),

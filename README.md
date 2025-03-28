@@ -128,10 +128,10 @@ SnackNLoad.showToast('This is a toast message.');
 ```dart
 SnackNLoad.showSnackBar(
   'Welcome in year 2025!\nMay this year fulfill your dreams and bring happiness.',
-  type: ToastType.success,
+  type: Type.success,
   title: "Hello",
   showIcon: false,
-  toastPosition: Position.top,
+  position: Position.top,
 );
 ```
 
@@ -173,7 +173,7 @@ SnackNLoad.instance.loadingStyle = LoadingStyle.dark;
 Set toast position to top, center, or bottom:
 
 ```dart
-SnackNLoad.instance.toastPosition = Position.top;
+SnackNLoad.instance.position = Position.top;
 ```
 
 ### Indicator Types

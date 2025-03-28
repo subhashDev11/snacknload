@@ -12,10 +12,10 @@ class SnackNLoadTheme {
   static Color get progressColor => _getColor(Colors.black, Colors.white);
   static Color get backgroundColor => _getColor(Colors.white, Colors.black.withOpacity(0.9));
   static Color get textColor => _getColor(Colors.black, Colors.white);
-  static Color get successSnackbarBGColor => SnackNLoad.instance.successSnackbarBGColor ?? Colors.green;
-  static Color get errorSnackbarBGColor => SnackNLoad.instance.errorSnackbarBGColor ?? Colors.red;
-  static Color get infoSnackbarBGColor => SnackNLoad.instance.infoSnackbarBGColor ?? Colors.blue;
-  static Color get warningSnackbarBGColor => SnackNLoad.instance.warningSnackbarBGColor ?? Colors.orange;
+  static Color get successContainerColor => SnackNLoad.instance.successContainerColor ?? Colors.green;
+  static Color get errorContainerColor => SnackNLoad.instance.errorContainerColor ?? Colors.red;
+  static Color get infoContainerColor => SnackNLoad.instance.infoContainerColor ?? Colors.blue;
+  static Color get warningContainerColor => SnackNLoad.instance.warningContainerColor ?? Colors.orange;
 
   /// Box Shadow
   static List<BoxShadow>? get boxShadow => SnackNLoad.instance.loadingStyle == LoadingStyle.custom
@@ -52,7 +52,7 @@ class SnackNLoadTheme {
   static double get progressWidth => SnackNLoad.instance.progressWidth;
   static double get lineWidth => SnackNLoad.instance.lineWidth;
   static IndicatorType get indicatorType => SnackNLoad.instance.indicatorType;
-  static Position get toastPosition => SnackNLoad.instance.toastPosition;
+  static Position get position => SnackNLoad.instance.position;
   static Duration get displayDuration => SnackNLoad.instance.displayDuration;
   static Duration get animationDuration => SnackNLoad.instance.animationDuration;
   static EdgeInsets get contentPadding => SnackNLoad.instance.contentPadding;

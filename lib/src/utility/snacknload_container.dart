@@ -23,7 +23,7 @@ class SnackNLoad {
   late MaskType maskType;
 
   /// toast position, default [Position.center].
-  late Position toastPosition;
+  late Position position;
 
   /// loading animationStyle, default [SnackNLoadAnimationStyle.opacity].
   late SnackNLoadAnimationStyle animationStyle;
@@ -103,10 +103,10 @@ class SnackNLoad {
 
   Widget? _w;
 
-  Color? successSnackbarBGColor;
-  Color? errorSnackbarBGColor;
-  Color? infoSnackbarBGColor;
-  Color? warningSnackbarBGColor;
+  Color? successContainerColor;
+  Color? errorContainerColor;
+  Color? infoContainerColor;
+  Color? warningContainerColor;
 
   SnackNLoadOverlayEntry? overlayEntry;
   GlobalKey<LoadingContainerState>? _key;
@@ -129,7 +129,7 @@ class SnackNLoad {
     loadingStyle = LoadingStyle.dark;
     indicatorType = IndicatorType.fadingCircle;
     maskType = MaskType.none;
-    toastPosition = Position.center;
+    position = Position.center;
     animationStyle = SnackNLoadAnimationStyle.opacity;
     textAlign = TextAlign.center;
     toastTextAlign = TextAlign.start;
@@ -145,10 +145,10 @@ class SnackNLoad {
       vertical: 15.0,
       horizontal: 20.0,
     );
-    successSnackbarBGColor = Colors.green;
-    errorSnackbarBGColor = Colors.red;
-    infoSnackbarBGColor = Colors.blue;
-    warningSnackbarBGColor = Colors.orange;
+    successContainerColor = Colors.green;
+    errorContainerColor = Colors.red;
+    infoContainerColor = Colors.blue;
+    warningContainerColor = Colors.orange;
   }
 
   static SnackNLoad get instance => _instance;
@@ -356,7 +356,7 @@ class SnackNLoad {
     return _instance._show(
       status: status,
       duration: duration ?? SnackNLoadTheme.displayDuration,
-      toastPosition: toastPosition ?? SnackNLoadTheme.toastPosition,
+      toastPosition: toastPosition ?? SnackNLoadTheme.position,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
     );
@@ -366,7 +366,7 @@ class SnackNLoad {
   static Future<void> showSnackBar(
     String message, {
     Duration? duration,
-    Position? toastPosition,
+    Position? position,
     MaskType? maskType,
     bool? dismissOnTap,
     bool? showIcon,
@@ -387,7 +387,7 @@ class SnackNLoad {
       messageStyle: messageStyle,
       titleStyle: titleStyle,
       duration: duration ?? SnackNLoadTheme.displayDuration,
-      toastPosition: toastPosition ?? SnackNLoadTheme.toastPosition,
+      toastPosition: position ?? SnackNLoadTheme.position,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       margin: margin,
