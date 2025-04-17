@@ -138,8 +138,17 @@ class _MyHomePageState extends State<_MyHomePage> {
                             horizontal: 10,
                             vertical: 12,
                           ),
-                          child: Text("I'm dialog content powered by SnackNLoad. SnackNLoad is an flutter package published by Subhash Chandra Shukla."),
-                        )
+                          child: Text(
+                              "I'm dialog content powered by SnackNLoad. SnackNLoad is an flutter package published by Subhash Chandra Shukla."),
+                        ),
+                        actionConfigs: [
+                          ActionConfig(
+                            label: "OK",
+                            onPressed: () {
+                              print("action tap");
+                            },
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -169,8 +178,10 @@ class _MyHomePageState extends State<_MyHomePage> {
                     onPressed: () {
                       _progress = 0;
                       _timer?.cancel();
-                      _timer = Timer.periodic(const Duration(milliseconds: 100), (Timer timer) {
-                        SnackNLoad.showProgress(_progress, status: '${(_progress * 100).toStringAsFixed(0)}%');
+                      _timer = Timer.periodic(const Duration(milliseconds: 100),
+                          (Timer timer) {
+                        SnackNLoad.showProgress(_progress,
+                            status: '${(_progress * 100).toStringAsFixed(0)}%');
                         _progress += 0.03;
 
                         if (_progress >= 1) {
@@ -188,7 +199,9 @@ class _MyHomePageState extends State<_MyHomePage> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding: EdgeInsets.all(30,),
+                padding: EdgeInsets.all(
+                  30,
+                ),
                 child: Column(
                   children: <Widget>[
                     Text('Style'),
@@ -227,7 +240,9 @@ class _MyHomePageState extends State<_MyHomePage> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding: EdgeInsets.all(30,),
+                padding: EdgeInsets.all(
+                  30,
+                ),
                 child: Column(
                   children: <Widget>[
                     Text('Mask Type'),
@@ -270,7 +285,9 @@ class _MyHomePageState extends State<_MyHomePage> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding: EdgeInsets.all(30,),
+                padding: EdgeInsets.all(
+                  30,
+                ),
                 child: Column(
                   children: <Widget>[
                     Text('Toast Position'),
@@ -309,13 +326,16 @@ class _MyHomePageState extends State<_MyHomePage> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding: EdgeInsets.all(30,),
+                padding: EdgeInsets.all(
+                  30,
+                ),
                 child: Column(
                   children: <Widget>[
                     Text('Animation Style'),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                      child: CupertinoSegmentedControl<SnackNLoadAnimationStyle>(
+                      child:
+                          CupertinoSegmentedControl<SnackNLoadAnimationStyle>(
                         selectedColor: Colors.blue,
                         children: {
                           SnackNLoadAnimationStyle.opacity: Padding(
@@ -352,7 +372,9 @@ class _MyHomePageState extends State<_MyHomePage> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding: EdgeInsets.all(30,),
+                padding: EdgeInsets.all(
+                  30,
+                ),
                 child: Column(
                   children: <Widget>[
                     Text('IndicatorType(total: 23)'),

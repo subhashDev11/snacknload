@@ -4,6 +4,7 @@ import 'package:snacknload/src/utility/snacknload_container.dart';
 import 'package:snacknload/src/utility/snacknload_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:snacknload/src/widgets/snacknload_button.dart';
 
 T? _ambiguate<T>(T? value) => value;
 
@@ -18,7 +19,7 @@ class DialogContainer extends StatefulWidget {
   final bool animation;
   final bool useAdaptive;
   final ShapeBorder? shape;
-  final List<Widget>? actions;
+  final List<ActionConfig>? actionConfigs;
 
   const DialogContainer({
     super.key,
@@ -32,30 +33,33 @@ class DialogContainer extends StatefulWidget {
     this.animation = true,
     required this.useAdaptive,
     this.shape,
-    this.actions,
+    this.actionConfigs,
   });
 
   @override
   DialogContainerState createState() => DialogContainerState();
 }
 
-class DialogContainerState extends State<DialogContainer> with SingleTickerProviderStateMixin {
+class DialogContainerState extends State<DialogContainer>
+    with SingleTickerProviderStateMixin {
   Color? _maskColor;
   late AnimationController _animationController;
   late AlignmentGeometry _alignment;
   late bool _dismissOnTap, _ignoring;
 
-  //https://docs.flutter.dev/development/tools/sdk/release-notes/release-notes-3.0.0
   bool get isPersistentCallbacks =>
-      _ambiguate(SchedulerBinding.instance)!.schedulerPhase == SchedulerPhase.persistentCallbacks;
+      _ambiguate(SchedulerBinding.instance)!.schedulerPhase ==
+      SchedulerPhase.persistentCallbacks;
 
   @override
   void initState() {
     super.initState();
     if (!mounted) return;
     _alignment = AlignmentDirectional.center;
-    _dismissOnTap = widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
-    _ignoring = _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
+    _dismissOnTap =
+        widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
+    _ignoring =
+        _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
     _maskColor = SnackNLoadTheme.maskColor(widget.maskType);
     _animationController = AnimationController(
       vsync: this,
@@ -78,8 +82,9 @@ class DialogContainerState extends State<DialogContainer> with SingleTickerProvi
   Future<void> show(bool animation) {
     if (isPersistentCallbacks) {
       Completer<dynamic> completer = Completer<void>();
-      _ambiguate(SchedulerBinding.instance)!
-          .addPostFrameCallback((_) => completer.complete(_animationController.forward(from: animation ? 0 : 1)));
+      _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((_) =>
+          completer
+              .complete(_animationController.forward(from: animation ? 0 : 1)));
       return completer.future;
     } else {
       return _animationController.forward(from: animation ? 0 : 1);
@@ -89,8 +94,9 @@ class DialogContainerState extends State<DialogContainer> with SingleTickerProvi
   Future<void> dismiss(bool animation) {
     if (isPersistentCallbacks) {
       Completer<dynamic> completer = Completer<void>();
-      _ambiguate(SchedulerBinding.instance)!
-          .addPostFrameCallback((_) => completer.complete(_animationController.reverse(from: animation ? 1 : 0)));
+      _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((_) =>
+          completer
+              .complete(_animationController.reverse(from: animation ? 1 : 0)));
       return completer.future;
     } else {
       return _animationController.reverse(from: animation ? 1 : 0);
@@ -143,7 +149,7 @@ class DialogContainerState extends State<DialogContainer> with SingleTickerProvi
                 titleStyle: widget.titleStyle,
                 content: widget.contentWidget,
                 shape: widget.shape,
-                actions: widget.actions,
+                actionConfigs: widget.actionConfigs,
               ),
               _animationController,
               _alignment,
@@ -162,7 +168,7 @@ class DialogWidget extends StatelessWidget {
   final TextStyle? titleStyle;
   final bool useAdaptive;
   final ShapeBorder? shape;
-  final List<Widget>? actions;
+  final List<ActionConfig>? actionConfigs;
 
   const DialogWidget({
     super.key,
@@ -172,13 +178,41 @@ class DialogWidget extends StatelessWidget {
     this.content,
     this.shape,
     required this.useAdaptive,
-    required this.actions,
+    required this.actionConfigs,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (useAdaptive) {
-      return AlertDialog.adaptive(
+    return Builder(builder: (_) {
+      if (useAdaptive) {
+        return AlertDialog.adaptive(
+          shape: shape ??
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                  SnackNLoadTheme.radius,
+                ),
+              ),
+          title: Text(
+            title!,
+            style: titleStyle ?? Theme.of(context).dialogTheme.titleTextStyle,
+          ),
+          content: content,
+          actions: actionConfigs
+              ?.map(
+                (e) => SnackNLoadButton(
+                  text: e.label,
+                  icon: e.iconData,
+                  variant: e.buttonVariant ?? ButtonVariant.primary,
+                  onPressed: () async {
+                    await SnackNLoad.dismiss();
+                    e.onPressed();
+                  },
+                ),
+              )
+              .toList(),
+        );
+      }
+      return AlertDialog(
         shape: shape ??
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
@@ -187,28 +221,41 @@ class DialogWidget extends StatelessWidget {
             ),
         title: Text(
           title!,
-          style: titleStyle ??
-              Theme.of(context).dialogTheme.titleTextStyle,
+          style: titleStyle ?? Theme.of(context).dialogTheme.titleTextStyle,
         ),
         content: content,
-        actions: actions,
+        actionsPadding: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 4,
+        ),
+        actions: actionConfigs
+            ?.map(
+              (e) => SnackNLoadButton(
+                text: e.label,
+                icon: e.iconData,
+                variant: e.buttonVariant ?? ButtonVariant.primary,
+                onPressed: () async {
+                  await SnackNLoad.dismiss();
+                  e.onPressed();
+                },
+              ),
+            )
+            .toList(),
       );
-    }
-    return AlertDialog(
-      shape: shape ??
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              SnackNLoadTheme.radius,
-            ),
-          ),
-      title: Text(
-        title!,
-        style: titleStyle ??
-            Theme.of(context).dialogTheme.titleTextStyle,
-      ),
-      content: content,
-      actions: actions,
-    );
-    
+    });
   }
+}
+
+class ActionConfig {
+  final String label;
+  final Function onPressed;
+  final IconData? iconData;
+  final ButtonVariant? buttonVariant;
+
+  ActionConfig({
+    required this.label,
+    required this.onPressed,
+    this.iconData,
+    this.buttonVariant,
+  });
 }

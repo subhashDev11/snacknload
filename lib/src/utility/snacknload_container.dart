@@ -119,7 +119,8 @@ class SnackNLoad {
 
   GlobalKey<LoadingProgressState>? get progressKey => _progressKey;
 
-  final List<LoadingStatusCallback> _statusCallbacks = <LoadingStatusCallback>[];
+  final List<LoadingStatusCallback> _statusCallbacks =
+      <LoadingStatusCallback>[];
 
   factory SnackNLoad() => _instance;
   static final SnackNLoad _instance = SnackNLoad._internal();
@@ -128,7 +129,7 @@ class SnackNLoad {
     /// set deafult value
     loadingStyle = LoadingStyle.dark;
     indicatorType = IndicatorType.fadingCircle;
-    maskType = MaskType.none;
+    maskType = MaskType.black;
     position = Position.center;
     animationStyle = SnackNLoadAnimationStyle.opacity;
     textAlign = TextAlign.center;
@@ -204,7 +205,8 @@ class SnackNLoad {
 
     if (_instance.w == null || _instance.progressKey == null) {
       if (_instance.key != null) await dismiss(animation: false);
-      GlobalKey<LoadingProgressState> progressKey = GlobalKey<LoadingProgressState>();
+      GlobalKey<LoadingProgressState> progressKey =
+          GlobalKey<LoadingProgressState>();
       Widget w = LoadingProgress(
         key: progressKey,
         value: value,
@@ -254,7 +256,7 @@ class SnackNLoad {
     MaskType? maskType,
     bool? useAdaptive,
     ShapeBorder? shape,
-    List<Widget>? actions,
+    List<ActionConfig>? actionConfigs,
   }) async {
     assert(
       overlayEntry != null,
@@ -292,7 +294,7 @@ class SnackNLoad {
       animation: animation,
       dismissOnTap: dismissOnTap,
       shape: shape,
-      actions: actions,
+      actionConfigs: actionConfigs,
     );
     completer.future.whenComplete(() {
       _callback(LoadingStatus.show);
@@ -370,7 +372,8 @@ class SnackNLoad {
     MaskType? maskType,
     bool? dismissOnTap,
     bool? showIcon,
-    String? title, Type? type,
+    String? title,
+    Type? type,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
     bool? showDivider,
@@ -386,8 +389,11 @@ class SnackNLoad {
       showDivider: showDivider,
       messageStyle: messageStyle,
       titleStyle: titleStyle,
-      duration: duration ?? SnackNLoadTheme.displayDuration,
-      toastPosition: position ?? SnackNLoadTheme.position,
+      duration: duration ??
+          Duration(
+            seconds: 3,
+          ),
+      toastPosition: position ?? Position.top,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       margin: margin,
@@ -405,7 +411,7 @@ class SnackNLoad {
     bool? dismissOnTap,
     MaskType? maskType,
     bool? useAdaptive,
-    List<Widget>? actions,
+    List<ActionConfig>? actionConfigs,
   }) {
     return _instance._showDialog(
       contentWidget: contentWidget,
@@ -415,7 +421,7 @@ class SnackNLoad {
       dismissOnTap: dismissOnTap,
       maskType: maskType,
       useAdaptive: useAdaptive,
-      actions: actions,
+      actionConfigs: actionConfigs,
     );
   }
 

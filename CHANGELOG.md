@@ -30,3 +30,6 @@
 
 ## 1.0.7
 * Code formating and pub score related changes
+
+## 1.0.8
+* Default option changes
