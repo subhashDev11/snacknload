@@ -23,7 +23,7 @@ class SnackNLoad {
   late MaskType maskType;
 
   /// toast position, default [Position.center].
-  late Position position;
+  late SnackNLoadPosition position;
 
   /// loading animationStyle, default [SnackNLoadAnimationStyle.opacity].
   late SnackNLoadAnimationStyle animationStyle;
@@ -130,7 +130,7 @@ class SnackNLoad {
     loadingStyle = LoadingStyle.dark;
     indicatorType = IndicatorType.fadingCircle;
     maskType = MaskType.black;
-    position = Position.center;
+    position = SnackNLoadPosition.center;
     animationStyle = SnackNLoadAnimationStyle.opacity;
     textAlign = TextAlign.center;
     toastTextAlign = TextAlign.start;
@@ -347,33 +347,33 @@ class SnackNLoad {
     );
   }
 
-  /// showToast [status] [duration] [toastPosition] [maskType]
+  /// showToast [status] [duration] [position] [maskType]
   static Future<void> showToast(
     String status, {
     Duration? duration,
-    Position? toastPosition,
+    SnackNLoadPosition? position,
     MaskType? maskType,
     bool? dismissOnTap,
   }) {
     return _instance._show(
       status: status,
       duration: duration ?? SnackNLoadTheme.displayDuration,
-      toastPosition: toastPosition ?? SnackNLoadTheme.position,
+      position: position ?? SnackNLoadTheme.position,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
     );
   }
 
-  /// showSnackBar [message] [duration] [toastType] [toastPosition] [maskType]
+  /// showSnackBar [message] [duration] [toastType] [position] [maskType]
   static Future<void> showSnackBar(
     String message, {
-    Duration? duration,
-    Position? position,
+    Duration? duration, 
+        SnackNLoadPosition? position,
     MaskType? maskType,
     bool? dismissOnTap,
     bool? showIcon,
     String? title,
-    Type? type,
+    SnackNLoadType? type,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
     bool? showDivider,
@@ -385,7 +385,7 @@ class SnackNLoad {
       message: message,
       showIcon: showIcon,
       title: title,
-      type: type ?? Type.info,
+      type: type ?? SnackNLoadType.info,
       showDivider: showDivider,
       messageStyle: messageStyle,
       titleStyle: titleStyle,
@@ -393,7 +393,7 @@ class SnackNLoad {
           Duration(
             seconds: 3,
           ),
-      toastPosition: position ?? Position.top,
+      position: position ?? SnackNLoadPosition.top,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       margin: margin,
@@ -453,14 +453,14 @@ class SnackNLoad {
     _instance._statusCallbacks.clear();
   }
 
-  /// show [status] [duration] [toastPosition] [maskType]
+  /// show [status] [duration] [position] [maskType]
   Future<void> _show({
     Widget? w,
     String? status,
     Duration? duration,
     MaskType? maskType,
     bool? dismissOnTap,
-    Position? toastPosition,
+    SnackNLoadPosition? position,
   }) async {
     assert(
       overlayEntry != null,
@@ -497,7 +497,7 @@ class SnackNLoad {
       );
     }
 
-    toastPosition ??= Position.center;
+    position ??= SnackNLoadPosition.center;
     bool animation = _w == null;
     _progressKey = null;
     if (_key != null) await dismiss(animation: false);
@@ -509,7 +509,7 @@ class SnackNLoad {
       status: status,
       indicator: w,
       animation: animation,
-      toastPosition: toastPosition,
+      position: position,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       completer: completer,
@@ -527,7 +527,7 @@ class SnackNLoad {
     return completer.future;
   }
 
-  /// show styled [status] [duration] [toastPosition] [maskType]
+  /// show styled [status] [duration] [position] [maskType]
   Future<void> _showSnackbar({
     required String message,
     Duration? duration,
@@ -536,8 +536,8 @@ class SnackNLoad {
     bool? showIcon,
     bool? showDivider,
     String? title,
-    Position? toastPosition,
-    required Type type,
+    SnackNLoadPosition? position,
+    required SnackNLoadType type,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
     EdgeInsets? contentPadding,
@@ -564,21 +564,21 @@ class SnackNLoad {
       );
     }
 
-    toastPosition ??= Position.center;
+    position ??= SnackNLoadPosition.center;
     bool animation = _w == null;
     _progressKey = null;
     if (_key != null) await dismiss(animation: false);
 
     Completer<void> completer = Completer<void>();
     _key = GlobalKey<LoadingContainerState>();
-    _w = SnackbarContainer(
+    _w = SnackBarContainer(
       key: _key,
       type: type,
       message: message,
       title: title,
       showIcon: showIcon,
       animation: animation,
-      toastPosition: toastPosition,
+      position: position,
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       completer: completer,

@@ -1,5 +1,5 @@
 /// Toast/Snackbar type
-enum Type { info, success, error, warning }
+enum SnackNLoadType { info, success, error, warning }
 
 /// Loading style
 enum LoadingStyle {
@@ -9,7 +9,7 @@ enum LoadingStyle {
 }
 
 /// Toast/Snackbar position
-enum Position {
+enum SnackNLoadPosition {
   top,
   center,
   bottom,

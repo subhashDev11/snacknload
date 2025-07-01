@@ -52,7 +52,7 @@ class SnackNLoadTheme {
   static double get progressWidth => SnackNLoad.instance.progressWidth;
   static double get lineWidth => SnackNLoad.instance.lineWidth;
   static IndicatorType get indicatorType => SnackNLoad.instance.indicatorType;
-  static Position get position => SnackNLoad.instance.position;
+  static SnackNLoadPosition get position => SnackNLoad.instance.position;
   static Duration get displayDuration => SnackNLoad.instance.displayDuration;
   static Duration get animationDuration => SnackNLoad.instance.animationDuration;
   static EdgeInsets get contentPadding => SnackNLoad.instance.contentPadding;
@@ -69,10 +69,10 @@ class SnackNLoadTheme {
   }
 
   /// Alignment based on position
-  static AlignmentGeometry alignment(Position position) {
-    return position == Position.bottom
+  static AlignmentGeometry alignment(SnackNLoadPosition position) {
+    return position == SnackNLoadPosition.bottom
         ? AlignmentDirectional.bottomCenter
-        : (position == Position.top ? AlignmentDirectional.topCenter : AlignmentDirectional.center);
+        : (position == SnackNLoadPosition.top ? AlignmentDirectional.topCenter : AlignmentDirectional.center);
   }
 
   /// Helper function to get the color based on the loading style

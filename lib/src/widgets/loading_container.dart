@@ -11,7 +11,7 @@ class LoadingContainer extends StatefulWidget {
   final Widget? indicator;
   final String? status;
   final bool? dismissOnTap;
-  final Position? toastPosition;
+  final SnackNLoadPosition? position;
   final MaskType? maskType;
   final Completer<void>? completer;
   final bool animation;
@@ -21,7 +21,7 @@ class LoadingContainer extends StatefulWidget {
     this.indicator,
     this.status,
     this.dismissOnTap,
-    this.toastPosition,
+    this.position,
     this.maskType,
     this.completer,
     this.animation = true,
@@ -48,7 +48,7 @@ class LoadingContainerState extends State<LoadingContainer> with SingleTickerPro
     _status = widget.status;
     _alignment = (widget.indicator == null && widget.status?.isNotEmpty == true)
         ? SnackNLoadTheme.alignment(
-            widget.toastPosition ?? Position.top,
+            widget.position ?? SnackNLoadPosition.top,
           )
         : AlignmentDirectional.center;
     _dismissOnTap = widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);

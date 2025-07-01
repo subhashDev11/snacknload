@@ -7,15 +7,15 @@ import 'package:snacknload/src/utility/snacknload_theme.dart';
 
 T? _ambiguate<T>(T? value) => value;
 
-class SnackbarContainer extends StatefulWidget {
+class SnackBarContainer extends StatefulWidget {
   final String message;
   final String? title;
   final bool? dismissOnTap;
-  final Position? toastPosition;
+  final SnackNLoadPosition? position;
   final MaskType? maskType;
   final Completer<void>? completer;
   final bool animation;
-  final Type type;
+  final SnackNLoadType type;
   final TextStyle? titleStyle;
   final TextStyle? messageStyle;
   final bool? showIcon;
@@ -24,14 +24,14 @@ class SnackbarContainer extends StatefulWidget {
   final EdgeInsets? contentPadding;
   final EdgeInsets? margin;
 
-  const SnackbarContainer({
+  const SnackBarContainer({
     super.key,
     this.messageStyle,
     this.titleStyle,
     required this.message,
     this.title,
     this.dismissOnTap,
-    this.toastPosition,
+    this.position,
     this.maskType,
     this.completer,
     this.animation = true,
@@ -44,10 +44,10 @@ class SnackbarContainer extends StatefulWidget {
   });
 
   @override
-  SnackbarContainerState createState() => SnackbarContainerState();
+  SnackBarContainerState createState() => SnackBarContainerState();
 }
 
-class SnackbarContainerState extends State<SnackbarContainer> with SingleTickerProviderStateMixin {
+class SnackBarContainerState extends State<SnackBarContainer> with SingleTickerProviderStateMixin {
   late String _message;
   Color? _maskColor;
   late AnimationController _animationController;
@@ -63,7 +63,7 @@ class SnackbarContainerState extends State<SnackbarContainer> with SingleTickerP
     if (!mounted) return;
     _message = widget.message;
     _alignment = SnackNLoadTheme.alignment(
-      widget.toastPosition ?? Position.top,
+      widget.position ?? SnackNLoadPosition.top,
     );
     _dismissOnTap = widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
     _ignoring = _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
@@ -181,7 +181,7 @@ class _Indicator extends StatelessWidget {
   final String? title;
   final TextStyle? titleStyle;
   final TextStyle? messageStyle;
-  final Type type;
+  final SnackNLoadType type;
   final bool showIcon;
   final bool showDivider;
   final Color? backgroundColor;
@@ -206,24 +206,24 @@ class _Indicator extends StatelessWidget {
       return backgroundColor!;
     }
     switch (type) {
-      case Type.success:
+      case SnackNLoadType.success:
         return SnackNLoadTheme.successContainerColor;
-      case Type.error:
+      case SnackNLoadType.error:
         return SnackNLoadTheme.errorContainerColor;
-      case Type.warning:
+      case SnackNLoadType.warning:
         return SnackNLoadTheme.warningContainerColor;
-      case Type.info:
+      case SnackNLoadType.info:
         return theme.primaryColor;
     }
   }
 
   IconData _getIcon() {
     switch (type) {
-      case Type.success:
+      case SnackNLoadType.success:
         return Icons.check_circle;
-      case Type.error:
+      case SnackNLoadType.error:
         return Icons.error;
-      case Type.warning:
+      case SnackNLoadType.warning:
         return Icons.warning;
       default:
         return Icons.info;

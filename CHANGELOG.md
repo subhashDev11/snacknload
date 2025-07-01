@@ -33,3 +33,6 @@
 
 ## 1.0.8
 * Default option changes
+
+## 1.0.9
+* Upgrade to latest

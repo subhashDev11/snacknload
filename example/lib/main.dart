@@ -119,9 +119,9 @@ class _MyHomePageState extends State<_MyHomePage> {
                       _timer?.cancel();
                       SnackNLoad.showSnackBar(
                         'Welcome in year 2025!\nMay this year will full fill your all dreams and provide you happiness moment',
-                        type: Type.success,
+                        type: SnackNLoadType.success,
                         showIcon: true,
-                        position: Position.top,
+                        position: SnackNLoadPosition.top,
                       );
                     },
                   ),
@@ -293,18 +293,18 @@ class _MyHomePageState extends State<_MyHomePage> {
                     Text('Toast Position'),
                     Padding(
                       padding: EdgeInsets.only(top: 10.0),
-                      child: CupertinoSegmentedControl<Position>(
+                      child: CupertinoSegmentedControl<SnackNLoadPosition>(
                         selectedColor: Colors.blue,
                         children: {
-                          Position.top: Padding(
+                          SnackNLoadPosition.top: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('top'),
                           ),
-                          Position.center: Padding(
+                          SnackNLoadPosition.center: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('center'),
                           ),
-                          Position.bottom: Padding(
+                          SnackNLoadPosition.bottom: Padding(
                             padding: EdgeInsets.all(5.0),
                             child: Text('bottom'),
                           ),
