@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snacknload/src/utility/snacknload_container.dart';
-import 'package:snacknload/src/widgets/overlay_entry.dart';
+import './overlay_entry.dart';
 
 class LoadingWidget extends StatefulWidget {
   final Widget? child;
@@ -8,20 +8,23 @@ class LoadingWidget extends StatefulWidget {
   const LoadingWidget({
     super.key,
     required this.child,
-  })  : assert(child != null);
+  }) : assert(child != null);
 
   @override
-  LoadingWidgetState createState() => LoadingWidgetState();
+  _LoadingWidgetState createState() => _LoadingWidgetState();
 }
 
-class LoadingWidgetState extends State<LoadingWidget> {
+class _LoadingWidgetState extends State<LoadingWidget> {
   late SnackNLoadOverlayEntry _overlayEntry;
 
   @override
   void initState() {
     super.initState();
     _overlayEntry = SnackNLoadOverlayEntry(
-      builder: (BuildContext context) => SnackNLoad.instance.w ?? Container(),
+        builder: (BuildContext context) =>
+            ExcludeFocus(child: ExcludeSemantics(
+              child: SnackNLoad.instance.w ?? const SizedBox.shrink(),
+            ))
     );
     SnackNLoad.instance.overlayEntry = _overlayEntry;
   }
@@ -33,11 +36,7 @@ class LoadingWidgetState extends State<LoadingWidget> {
         initialEntries: [
           SnackNLoadOverlayEntry(
             builder: (BuildContext context) {
-              if (widget.child != null) {
-                return widget.child!;
-              } else {
-                return Container();
-              }
+              return widget.child ?? const SizedBox.shrink();
             },
           ),
           _overlayEntry,
