@@ -175,7 +175,7 @@ class LoadingIndicatorState extends State<LoadingIndicator> {
           size: _size,
         );
         break;
-      }
+    }
 
     return Container(
       constraints: BoxConstraints(

@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:snacknload/src/utility/snacknload_theme.dart';
 
-
 class LoadingProgress extends StatefulWidget {
   final double value;
 
@@ -51,7 +50,6 @@ class LoadingProgressState extends State<LoadingProgress> {
 }
 
 class _CircleProgress extends ProgressIndicator {
-
   @override
   final double value;
   final double width;

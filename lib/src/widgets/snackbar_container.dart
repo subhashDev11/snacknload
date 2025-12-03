@@ -47,7 +47,8 @@ class SnackBarContainer extends StatefulWidget {
   SnackBarContainerState createState() => SnackBarContainerState();
 }
 
-class SnackBarContainerState extends State<SnackBarContainer> with SingleTickerProviderStateMixin {
+class SnackBarContainerState extends State<SnackBarContainer>
+    with SingleTickerProviderStateMixin {
   late String _message;
   Color? _maskColor;
   late AnimationController _animationController;
@@ -55,7 +56,8 @@ class SnackBarContainerState extends State<SnackBarContainer> with SingleTickerP
   late bool _dismissOnTap, _ignoring;
 
   bool get isPersistentCallbacks =>
-      _ambiguate(SchedulerBinding.instance)!.schedulerPhase == SchedulerPhase.persistentCallbacks;
+      _ambiguate(SchedulerBinding.instance)!.schedulerPhase ==
+      SchedulerPhase.persistentCallbacks;
 
   @override
   void initState() {
@@ -65,8 +67,10 @@ class SnackBarContainerState extends State<SnackBarContainer> with SingleTickerP
     _alignment = SnackNLoadTheme.alignment(
       widget.position ?? SnackNLoadPosition.top,
     );
-    _dismissOnTap = widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
-    _ignoring = _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
+    _dismissOnTap =
+        widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
+    _ignoring =
+        _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
     _maskColor = SnackNLoadTheme.maskColor(widget.maskType);
     _animationController = AnimationController(
       vsync: this,
@@ -89,8 +93,9 @@ class SnackBarContainerState extends State<SnackBarContainer> with SingleTickerP
   Future<void> show(bool animation) {
     if (isPersistentCallbacks) {
       Completer<dynamic> completer = Completer<void>();
-      _ambiguate(SchedulerBinding.instance)!
-          .addPostFrameCallback((_) => completer.complete(_animationController.forward(from: animation ? 0 : 1)));
+      _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((_) =>
+          completer
+              .complete(_animationController.forward(from: animation ? 0 : 1)));
       return completer.future;
     } else {
       return _animationController.forward(from: animation ? 0 : 1);
@@ -100,8 +105,9 @@ class SnackBarContainerState extends State<SnackBarContainer> with SingleTickerP
   Future<void> dismiss(bool animation) {
     if (isPersistentCallbacks) {
       Completer<dynamic> completer = Completer<void>();
-      _ambiguate(SchedulerBinding.instance)!
-          .addPostFrameCallback((_) => completer.complete(_animationController.reverse(from: animation ? 1 : 0)));
+      _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((_) =>
+          completer
+              .complete(_animationController.reverse(from: animation ? 1 : 0)));
       return completer.future;
     } else {
       return _animationController.reverse(from: animation ? 1 : 0);

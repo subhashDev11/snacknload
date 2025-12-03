@@ -21,11 +21,10 @@ class _LoadingWidgetState extends State<LoadingWidget> {
   void initState() {
     super.initState();
     _overlayEntry = SnackNLoadOverlayEntry(
-        builder: (BuildContext context) =>
-            ExcludeFocus(child: ExcludeSemantics(
+        builder: (BuildContext context) => ExcludeFocus(
+                child: ExcludeSemantics(
               child: SnackNLoad.instance.w ?? const SizedBox.shrink(),
-            ))
-    );
+            )));
     SnackNLoad.instance.overlayEntry = _overlayEntry;
   }
 

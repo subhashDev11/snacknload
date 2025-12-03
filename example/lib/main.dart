@@ -2,28 +2,40 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:snacknload/snacknload.dart';
-import 'package:example/custom_animation.dart';
 
 void main() {
   runApp(MyApp());
-  configLoading();
 }
 
 void configLoading() {
+  // SnackNLoad.instance
+  //   ..displayDuration = const Duration(milliseconds: 2000)
+  //   ..indicatorType = IndicatorType.fadingCircle
+  //   ..loadingStyle = LoadingStyle.dark
+  //   ..indicatorSize = 45.0
+  //   ..radius = 10.0
+  //   ..progressColor = Colors.yellow
+  //   ..backgroundColor = Colors.green
+  //   ..indicatorColor = Colors.yellow
+  //   ..textColor = Colors.yellow
+  //   ..maskColor = Colors.blue.withValues(alpha: 0.5)
+  //   ..userInteractions = true
+  //   ..dismissOnTap = false
+  //   ..customAnimation = CustomAnimation();
   SnackNLoad.instance
-    ..displayDuration = const Duration(milliseconds: 2000)
-    ..indicatorType = IndicatorType.fadingCircle
-    ..loadingStyle = LoadingStyle.dark
+    ..displayDuration = const Duration(milliseconds: 1000)
+    ..indicatorType = IndicatorType.wave
+    ..loadingStyle = LoadingStyle.custom
     ..indicatorSize = 45.0
     ..radius = 10.0
-    ..progressColor = Colors.yellow
-    ..backgroundColor = Colors.green
-    ..indicatorColor = Colors.yellow
-    ..textColor = Colors.yellow
-    ..maskColor = Colors.blue.withValues(alpha: 0.5)
-    ..userInteractions = true
-    ..dismissOnTap = false
-    ..customAnimation = CustomAnimation();
+    ..backgroundColor = Colors.cyan
+    ..indicatorColor = Colors.white
+    ..textColor = Colors.white
+    ..textStyle = TextStyle(
+      fontWeight: FontWeight.w900,
+      fontSize: 15,
+      color: Colors.white,
+    );
 }
 
 class MyApp extends StatelessWidget {
@@ -58,12 +70,15 @@ class _MyHomePageState extends State<_MyHomePage> {
   @override
   void initState() {
     super.initState();
-    SnackNLoad.addStatusCallback((status) {
-      if (status == LoadingStatus.dismiss) {
-        _timer?.cancel();
-      }
+    WidgetsBinding.instance.addPostFrameCallback((v) {
+      configLoading();
+      SnackNLoad.addStatusCallback((status) {
+        if (status == LoadingStatus.dismiss) {
+          _timer?.cancel();
+        }
+      });
+      SnackNLoad.showSuccess('Use in initState');
     });
-    SnackNLoad.showSuccess('Use in initState');
   }
 
   @override
@@ -101,6 +116,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                       await SnackNLoad.show(
                         status: 'loading...',
                         maskType: MaskType.black,
+                        dismissOnTap: true,
                       );
                     },
                   ),

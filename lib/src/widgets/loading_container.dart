@@ -31,7 +31,8 @@ class LoadingContainer extends StatefulWidget {
   LoadingContainerState createState() => LoadingContainerState();
 }
 
-class LoadingContainerState extends State<LoadingContainer> with SingleTickerProviderStateMixin {
+class LoadingContainerState extends State<LoadingContainer>
+    with SingleTickerProviderStateMixin {
   String? _status;
   Color? _maskColor;
   late AnimationController _animationController;
@@ -39,7 +40,8 @@ class LoadingContainerState extends State<LoadingContainer> with SingleTickerPro
   late bool _dismissOnTap, _ignoring;
 
   bool get isPersistentCallbacks =>
-      _ambiguate(SchedulerBinding.instance)!.schedulerPhase == SchedulerPhase.persistentCallbacks;
+      _ambiguate(SchedulerBinding.instance)!.schedulerPhase ==
+      SchedulerPhase.persistentCallbacks;
 
   @override
   void initState() {
@@ -51,8 +53,10 @@ class LoadingContainerState extends State<LoadingContainer> with SingleTickerPro
             widget.position ?? SnackNLoadPosition.top,
           )
         : AlignmentDirectional.center;
-    _dismissOnTap = widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
-    _ignoring = _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
+    _dismissOnTap =
+        widget.dismissOnTap ?? (SnackNLoadTheme.dismissOnTap ?? false);
+    _ignoring =
+        _dismissOnTap ? false : SnackNLoadTheme.ignoring(widget.maskType);
     _maskColor = SnackNLoadTheme.maskColor(widget.maskType);
     _animationController = AnimationController(
       vsync: this,
@@ -73,10 +77,12 @@ class LoadingContainerState extends State<LoadingContainer> with SingleTickerPro
   }
 
   Future<void> show(bool animation) {
+    print("Bg Color - ${SnackNLoadTheme.backgroundColor == Colors.white}");
     if (isPersistentCallbacks) {
       Completer<dynamic> completer = Completer<void>();
-      _ambiguate(SchedulerBinding.instance)!
-          .addPostFrameCallback((_) => completer.complete(_animationController.forward(from: animation ? 0 : 1)));
+      _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((_) =>
+          completer
+              .complete(_animationController.forward(from: animation ? 0 : 1)));
       return completer.future;
     } else {
       return _animationController.forward(from: animation ? 0 : 1);
@@ -86,8 +92,9 @@ class LoadingContainerState extends State<LoadingContainer> with SingleTickerPro
   Future<void> dismiss(bool animation) {
     if (isPersistentCallbacks) {
       Completer<dynamic> completer = Completer<void>();
-      _ambiguate(SchedulerBinding.instance)!
-          .addPostFrameCallback((_) => completer.complete(_animationController.reverse(from: animation ? 1 : 0)));
+      _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((_) =>
+          completer
+              .complete(_animationController.reverse(from: animation ? 1 : 0)));
       return completer.future;
     } else {
       return _animationController.reverse(from: animation ? 1 : 0);
@@ -182,7 +189,9 @@ class _Indicator extends StatelessWidget {
         children: <Widget>[
           if (indicator != null)
             Container(
-              margin: status?.isNotEmpty == true ? SnackNLoadTheme.textPadding : EdgeInsets.zero,
+              margin: status?.isNotEmpty == true
+                  ? SnackNLoadTheme.textPadding
+                  : EdgeInsets.zero,
               child: indicator,
             ),
           if (status != null)

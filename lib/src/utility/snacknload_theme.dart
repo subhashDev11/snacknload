@@ -10,17 +10,24 @@ class SnackNLoadTheme {
   /// Colors
   static Color get indicatorColor => _getColor(Colors.black, Colors.white);
   static Color get progressColor => _getColor(Colors.black, Colors.white);
-  static Color get backgroundColor => _getColor(Colors.white, Colors.black.withOpacity(0.9));
+  static Color get backgroundColor => _getBackgroundColor(
+      SnackNLoad.instance.backgroundColor ?? Colors.white,
+      Colors.black.withValues(alpha: 0.9));
   static Color get textColor => _getColor(Colors.black, Colors.white);
-  static Color get successContainerColor => SnackNLoad.instance.successContainerColor ?? Colors.green;
-  static Color get errorContainerColor => SnackNLoad.instance.errorContainerColor ?? Colors.red;
-  static Color get infoContainerColor => SnackNLoad.instance.infoContainerColor ?? Colors.blue;
-  static Color get warningContainerColor => SnackNLoad.instance.warningContainerColor ?? Colors.orange;
+  static Color get successContainerColor =>
+      SnackNLoad.instance.successContainerColor ?? Colors.green;
+  static Color get errorContainerColor =>
+      SnackNLoad.instance.errorContainerColor ?? Colors.red;
+  static Color get infoContainerColor =>
+      SnackNLoad.instance.infoContainerColor ?? Colors.blue;
+  static Color get warningContainerColor =>
+      SnackNLoad.instance.warningContainerColor ?? Colors.orange;
 
   /// Box Shadow
-  static List<BoxShadow>? get boxShadow => SnackNLoad.instance.loadingStyle == LoadingStyle.custom
-      ? SnackNLoad.instance.boxShadow ?? [BoxShadow()]
-      : null;
+  static List<BoxShadow>? get boxShadow =>
+      SnackNLoad.instance.loadingStyle == LoadingStyle.custom
+          ? SnackNLoad.instance.boxShadow ?? [BoxShadow()]
+          : null;
 
   /// Mask Color
   static Color maskColor(MaskType? maskType) {
@@ -28,8 +35,8 @@ class SnackNLoadTheme {
     return maskType == MaskType.custom
         ? SnackNLoad.instance.maskColor!
         : maskType == MaskType.black
-        ? Colors.black.withOpacity(0.5)
-        : Colors.transparent;
+            ? Colors.black.withOpacity(0.5)
+            : Colors.transparent;
   }
 
   /// Loading Animation
@@ -54,7 +61,8 @@ class SnackNLoadTheme {
   static IndicatorType get indicatorType => SnackNLoad.instance.indicatorType;
   static SnackNLoadPosition get position => SnackNLoad.instance.position;
   static Duration get displayDuration => SnackNLoad.instance.displayDuration;
-  static Duration get animationDuration => SnackNLoad.instance.animationDuration;
+  static Duration get animationDuration =>
+      SnackNLoad.instance.animationDuration;
   static EdgeInsets get contentPadding => SnackNLoad.instance.contentPadding;
   static EdgeInsets get textPadding => SnackNLoad.instance.textPadding;
   static TextAlign get textAlign => SnackNLoad.instance.textAlign;
@@ -72,7 +80,9 @@ class SnackNLoadTheme {
   static AlignmentGeometry alignment(SnackNLoadPosition position) {
     return position == SnackNLoadPosition.bottom
         ? AlignmentDirectional.bottomCenter
-        : (position == SnackNLoadPosition.top ? AlignmentDirectional.topCenter : AlignmentDirectional.center);
+        : (position == SnackNLoadPosition.top
+            ? AlignmentDirectional.topCenter
+            : AlignmentDirectional.center);
   }
 
   /// Helper function to get the color based on the loading style
@@ -80,7 +90,15 @@ class SnackNLoadTheme {
     return SnackNLoad.instance.loadingStyle == LoadingStyle.custom
         ? SnackNLoad.instance.textColor!
         : SnackNLoad.instance.loadingStyle == LoadingStyle.dark
-        ? dark
-        : light;
+            ? dark
+            : light;
+  }
+
+  static Color _getBackgroundColor(Color light, Color dark) {
+    return SnackNLoad.instance.loadingStyle == LoadingStyle.custom
+        ? SnackNLoad.instance.backgroundColor!
+        : SnackNLoad.instance.loadingStyle == LoadingStyle.dark
+            ? dark
+            : light;
   }
 }

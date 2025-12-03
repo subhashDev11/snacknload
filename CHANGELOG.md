@@ -37,5 +37,8 @@
 ## 1.0.9
 * Upgrade to latest
 
-# 1.1.0
+# 1.2.0
 * SDK 3.35 compatibility support added
+
+# 1.3.0
+* Bug fixes and improvements

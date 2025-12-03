@@ -367,8 +367,8 @@ class SnackNLoad {
   /// showSnackBar [message] [duration] [toastType] [position] [maskType]
   static Future<void> showSnackBar(
     String message, {
-    Duration? duration, 
-        SnackNLoadPosition? position,
+    Duration? duration,
+    SnackNLoadPosition? position,
     MaskType? maskType,
     bool? dismissOnTap,
     bool? showIcon,
