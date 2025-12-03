@@ -30,7 +30,7 @@ screenshots:
 
 topics:
   - progress-loader
-  - snack-bar, flush-bar
+  - snackbar-flushbar
   - toast-top-bottom-center
   - adaptive-dialog
   - show-error-success-warning
