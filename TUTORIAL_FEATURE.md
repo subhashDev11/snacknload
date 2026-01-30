@@ -4,6 +4,11 @@
 
 The **Tutorial/Tooltips** feature allows developers to create interactive onboarding experiences and feature highlights in their Flutter apps. Guide users through your app with beautiful, customizable tooltips that highlight specific widgets.
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/34bdc434-7338-4e4a-a775-5799df110443" width="70%" />
+  &nbsp;&nbsp;&nbsp;
+</p>
+
 ## ✨ Features
 
 - **🎯 Widget Targeting**: Highlight any widget using GlobalKeys
