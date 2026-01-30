@@ -14,8 +14,6 @@ SnackNLoad is a Flutter package that provides a powerful, customizable, and easy
 
 ## Features
 
-## Features
-
 ### 📚 Detailed Documentation
 
 For complete guides on specific features, please refer to:
