@@ -2,6 +2,11 @@
 
 This document describes the new enhanced UI features added to SnackNLoad, inspired by GetX's rich UI offerings.
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c1706620-2f26-46a4-8fe6-5878b41d2ae5" width="70%" />
+  &nbsp;&nbsp;&nbsp;
+</p>
+
 ## 🌟 New Features
 
 ### 1. Enhanced Loading (`showEnhancedLoading`)
