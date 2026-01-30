@@ -1,6 +1,6 @@
 name: snacknload
 description: SnackNLoad is a Flutter package for customizable loading indicators and top snack-bars, making it easy to manage loading states and show success, error, or info messages.
-version: 2.0.1
+version: 2.0.0
 homepage: https://github.com/subhashDev11/snacknload.git
 #authors:
 #  - Subhash Chandra Shukla (subhashchandras7318@gmail.com)

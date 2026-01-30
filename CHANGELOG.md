@@ -1,4 +1,4 @@
-## 2.0.1 - The Enhanced UI & Features Update 🚀
+## 2.0.0 - The Enhanced UI & Features Update 🚀
 
 This major release introduces a complete overhaul of the UI components, adding modern aesthetics and powerful new features including Enhanced Dialogs, Interactive Tutorials, and Glassmorphic Loading/Snackbars.
 
