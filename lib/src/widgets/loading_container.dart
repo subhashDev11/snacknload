@@ -77,7 +77,6 @@ class LoadingContainerState extends State<LoadingContainer>
   }
 
   Future<void> show(bool animation) {
-    print("Bg Color - ${SnackNLoadTheme.backgroundColor == Colors.white}");
     if (isPersistentCallbacks) {
       Completer<dynamic> completer = Completer<void>();
       _ambiguate(SchedulerBinding.instance)!.addPostFrameCallback((_) =>
@@ -172,40 +171,85 @@ class _Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine if this is a toast (text only) or loading (with indicator)
+    final bool isToast = indicator == null && status != null;
+
     return Container(
-      margin: const EdgeInsets.all(50.0),
+      margin: isToast
+          ? const EdgeInsets.only(
+              bottom: 100, left: 20, right: 20) // Bottom toast position
+          : const EdgeInsets.all(50.0), // Center loading position
+      constraints: isToast
+          ? const BoxConstraints(maxWidth: 300) // Compact for toast
+          : null,
       decoration: BoxDecoration(
         color: SnackNLoadTheme.backgroundColor,
         borderRadius: BorderRadius.circular(
-          SnackNLoadTheme.radius,
+          isToast ? 24 : SnackNLoadTheme.radius, // Pill shape for toast
         ),
-        boxShadow: SnackNLoadTheme.boxShadow,
-      ),
-      padding: SnackNLoadTheme.contentPadding,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          if (indicator != null)
-            Container(
-              margin: status?.isNotEmpty == true
-                  ? SnackNLoadTheme.textPadding
-                  : EdgeInsets.zero,
-              child: indicator,
-            ),
-          if (status != null)
-            Text(
-              status!,
-              style: SnackNLoadTheme.textStyle ??
-                  TextStyle(
-                    color: SnackNLoadTheme.textColor,
-                    fontSize: SnackNLoadTheme.fontSize,
-                  ),
-              textAlign: SnackNLoadTheme.textAlign,
-            ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            blurRadius: 16,
+            spreadRadius: 0,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 8,
+            spreadRadius: 0,
+            offset: const Offset(0, 2),
+          ),
         ],
       ),
+      padding: isToast
+          ? const EdgeInsets.symmetric(
+              horizontal: 20, vertical: 12) // Compact padding
+          : SnackNLoadTheme.contentPadding,
+      child: isToast ? _buildToastContent() : _buildLoadingContent(),
+    );
+  }
+
+  Widget _buildToastContent() {
+    return Text(
+      status!,
+      style: SnackNLoadTheme.textStyle ??
+          TextStyle(
+            color: SnackNLoadTheme.textColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.1,
+          ),
+      textAlign: TextAlign.center,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Widget _buildLoadingContent() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        if (indicator != null)
+          Container(
+            margin: status?.isNotEmpty == true
+                ? SnackNLoadTheme.textPadding
+                : EdgeInsets.zero,
+            child: indicator,
+          ),
+        if (status != null)
+          Text(
+            status!,
+            style: SnackNLoadTheme.textStyle ??
+                TextStyle(
+                  color: SnackNLoadTheme.textColor,
+                  fontSize: SnackNLoadTheme.fontSize,
+                ),
+            textAlign: SnackNLoadTheme.textAlign,
+          ),
+      ],
     );
   }
 }

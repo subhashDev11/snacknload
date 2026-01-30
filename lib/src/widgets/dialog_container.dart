@@ -3,6 +3,7 @@ import 'package:snacknload/src/utility/enums.dart';
 import 'package:snacknload/src/utility/snacknload_container.dart';
 import 'package:snacknload/src/utility/snacknload_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:snacknload/src/widgets/snacknload_button.dart';
 
@@ -20,6 +21,8 @@ class DialogContainer extends StatefulWidget {
   final bool useAdaptive;
   final ShapeBorder? shape;
   final List<ActionConfig>? actionConfigs;
+  final bool isFullScreen;
+  final SnackNLoadDialogType? dialogType;
 
   const DialogContainer({
     super.key,
@@ -34,6 +37,8 @@ class DialogContainer extends StatefulWidget {
     required this.useAdaptive,
     this.shape,
     this.actionConfigs,
+    this.isFullScreen = false,
+    this.dialogType,
   });
 
   @override
@@ -150,6 +155,8 @@ class DialogContainerState extends State<DialogContainer>
                 content: widget.contentWidget,
                 shape: widget.shape,
                 actionConfigs: widget.actionConfigs,
+                isFullScreen: widget.isFullScreen,
+                dialogType: widget.dialogType,
               ),
               _animationController,
               _alignment,
@@ -169,6 +176,8 @@ class DialogWidget extends StatelessWidget {
   final bool useAdaptive;
   final ShapeBorder? shape;
   final List<ActionConfig>? actionConfigs;
+  final bool isFullScreen;
+  final SnackNLoadDialogType? dialogType;
 
   const DialogWidget({
     super.key,
@@ -179,56 +188,245 @@ class DialogWidget extends StatelessWidget {
     this.shape,
     required this.useAdaptive,
     required this.actionConfigs,
+    this.isFullScreen = false,
+    this.dialogType,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (_) {
-      if (useAdaptive) {
-        return AlertDialog.adaptive(
-          shape: shape ??
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  SnackNLoadTheme.radius,
-                ),
-              ),
-          title: Text(
-            title!,
-            style: titleStyle ?? Theme.of(context).dialogTheme.titleTextStyle,
-          ),
-          content: content,
-          actions: actionConfigs
+    if (isFullScreen) {
+      return _buildFullScreenDialog(context);
+    }
+
+    final type = dialogType ??
+        (useAdaptive
+            ? SnackNLoadDialogType.adaptive
+            : SnackNLoadDialogType.material);
+
+    switch (type) {
+      case SnackNLoadDialogType.cupertino:
+        return _buildCupertinoDialog(context);
+      case SnackNLoadDialogType.enhanced:
+        return _buildEnhancedDialog(context);
+      case SnackNLoadDialogType.material:
+        return _buildMaterialDialog(context);
+      case SnackNLoadDialogType.adaptive:
+        return _buildAdaptiveDialog(context);
+    }
+  }
+
+  Widget _buildFullScreenDialog(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => SnackNLoad.dismiss(),
+        ),
+        title: titleWidget ??
+            (title != null
+                ? Text(
+                    title!,
+                    style: titleStyle ??
+                        Theme.of(context).appBarTheme.titleTextStyle,
+                  )
+                : null),
+        actions: _buildActions(context, forAppBar: true),
+      ),
+      body: content ?? const SizedBox.shrink(),
+    );
+  }
+
+  Widget _buildAdaptiveDialog(BuildContext context) {
+    return AlertDialog.adaptive(
+      shape: _getShape(),
+      title: _buildTitle(context),
+      content: content,
+      actions: _buildActions(context),
+    );
+  }
+
+  Widget _buildMaterialDialog(BuildContext context) {
+    return AlertDialog(
+      shape: _getShape(),
+      title: _buildTitle(context),
+      content: content,
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      actions: _buildActions(context),
+    );
+  }
+
+  Widget _buildCupertinoDialog(BuildContext context) {
+    return CupertinoAlertDialog(
+      title: _buildTitle(context),
+      content: content,
+      actions: actionConfigs
               ?.map(
-                (e) => SnackNLoadButton(
-                  text: e.label,
-                  icon: e.iconData,
-                  variant: e.buttonVariant ?? ButtonVariant.primary,
+                (e) => CupertinoDialogAction(
                   onPressed: () async {
                     await SnackNLoad.dismiss();
                     e.onPressed();
                   },
+                  isDefaultAction: e.buttonVariant == ButtonVariant.primary,
+                  isDestructiveAction: e.buttonVariant == ButtonVariant.danger,
+                  child: Text(e.label),
                 ),
               )
-              .toList(),
-        );
-      }
-      return AlertDialog(
-        shape: shape ??
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                SnackNLoadTheme.radius,
+              .toList() ??
+          [],
+    );
+  }
+
+  Widget _buildEnhancedDialog(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Center(
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(maxWidth: 340),
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(28),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.25),
+                blurRadius: 24,
+                offset: const Offset(0, 12),
               ),
-            ),
-        title: Text(
-          title!,
-          style: titleStyle ?? Theme.of(context).dialogTheme.titleTextStyle,
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (title != null || titleWidget != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
+                  child: DefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: colorScheme.onSurface,
+                      fontFamily: theme.textTheme.titleLarge?.fontFamily,
+                    ),
+                    textAlign: TextAlign.center,
+                    child: _buildTitle(context) ?? const SizedBox(),
+                  ),
+                ),
+              if (content != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: DefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.4,
+                    ),
+                    textAlign: TextAlign.center,
+                    child: content!,
+                  ),
+                ),
+              const SizedBox(height: 32),
+              if (actionConfigs != null && actionConfigs!.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: actionConfigs!.map((e) {
+                      final isPrimary =
+                          e.buttonVariant == ButtonVariant.primary;
+                      final isDestructive =
+                          e.buttonVariant == ButtonVariant.danger;
+                      final isGhost = e.buttonVariant == ButtonVariant.ghost;
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await SnackNLoad.dismiss();
+                            e.onPressed();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isGhost
+                                ? Colors.transparent
+                                : (isDestructive
+                                    ? colorScheme.error
+                                    : (isPrimary
+                                        ? colorScheme.primary
+                                        : colorScheme.surfaceContainerHighest)),
+                            foregroundColor: isGhost
+                                ? colorScheme.primary
+                                : (isDestructive
+                                    ? colorScheme.onError
+                                    : (isPrimary
+                                        ? colorScheme.onPrimary
+                                        : colorScheme.onSurfaceVariant)),
+                            elevation: isPrimary ? 2 : 0,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            shadowColor: Colors.transparent,
+                          ),
+                          child: Text(
+                            e.label,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+            ],
+          ),
         ),
-        content: content,
-        actionsPadding: const EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: 4,
-        ),
-        actions: actionConfigs
+      ),
+    );
+  }
+
+  ShapeBorder? _getShape() {
+    return shape ??
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(SnackNLoadTheme.radius),
+        );
+  }
+
+  Widget? _buildTitle(BuildContext context) {
+    if (titleWidget != null) return titleWidget;
+    if (title != null) {
+      return Text(
+        title!,
+      );
+    }
+    return null;
+  }
+
+  List<Widget> _buildActions(BuildContext context, {bool forAppBar = false}) {
+    if (forAppBar) {
+      return actionConfigs
+              ?.map(
+                (e) => TextButton(
+                  onPressed: () async {
+                    await SnackNLoad.dismiss();
+                    e.onPressed();
+                  },
+                  child: Text(
+                    e.label,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              )
+              .toList() ??
+          [];
+    }
+    return actionConfigs
             ?.map(
               (e) => SnackNLoadButton(
                 text: e.label,
@@ -240,9 +438,8 @@ class DialogWidget extends StatelessWidget {
                 },
               ),
             )
-            .toList(),
-      );
-    });
+            .toList() ??
+        [];
   }
 }
 

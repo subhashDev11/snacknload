@@ -4,12 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:snacknload/src/utility/snacknload_theme.dart';
 import 'package:snacknload/src/widgets/dialog_container.dart';
 import 'package:snacknload/src/widgets/loading_container.dart';
+import 'package:snacknload/src/widgets/enhanced_loading_container.dart';
+import 'package:snacknload/src/widgets/enhanced_snackbar_container.dart';
+import 'package:snacknload/src/widgets/tutorial_tooltip.dart';
+
+import 'package:snacknload/src/widgets/feature_spotlight.dart';
 import 'package:snacknload/src/widgets/progress.dart';
 import 'package:snacknload/src/widgets/indicator.dart';
 import 'package:snacknload/src/widgets/overlay_entry.dart';
 import 'package:snacknload/src/widgets/loading.dart';
-import 'package:snacknload/src/animations/animation.dart';
 import 'package:snacknload/src/widgets/snackbar_container.dart';
+import 'package:snacknload/src/widgets/snacknload_button.dart';
+import 'package:snacknload/src/animations/animation.dart';
 import 'enums.dart';
 
 class SnackNLoad {
@@ -150,6 +156,7 @@ class SnackNLoad {
     errorContainerColor = Colors.red;
     infoContainerColor = Colors.blue;
     warningContainerColor = Colors.orange;
+    progressColor = Colors.blue; // Initialize progress color
   }
 
   static SnackNLoad get instance => _instance;
@@ -257,6 +264,8 @@ class SnackNLoad {
     bool? useAdaptive,
     ShapeBorder? shape,
     List<ActionConfig>? actionConfigs,
+    bool isFullScreen = false,
+    SnackNLoadDialogType? dialogType,
   }) async {
     assert(
       overlayEntry != null,
@@ -293,8 +302,11 @@ class SnackNLoad {
       completer: completer,
       animation: animation,
       dismissOnTap: dismissOnTap,
+      maskType: maskType,
       shape: shape,
       actionConfigs: actionConfigs,
+      isFullScreen: isFullScreen,
+      dialogType: dialogType,
     );
     completer.future.whenComplete(() {
       _callback(LoadingStatus.show);
@@ -412,6 +424,8 @@ class SnackNLoad {
     MaskType? maskType,
     bool? useAdaptive,
     List<ActionConfig>? actionConfigs,
+    bool isFullScreen = false,
+    SnackNLoadDialogType? dialogType,
   }) {
     return _instance._showDialog(
       contentWidget: contentWidget,
@@ -422,6 +436,252 @@ class SnackNLoad {
       maskType: maskType,
       useAdaptive: useAdaptive,
       actionConfigs: actionConfigs,
+      isFullScreen: isFullScreen,
+      dialogType: dialogType,
+    );
+  }
+
+  /// Show a simple dialog with an OK button
+  static Future<void> showOkDialog({
+    required String title,
+    required String content,
+    String okLabel = 'OK',
+    VoidCallback? onOk,
+    bool useAdaptive = true,
+    TextStyle? titleStyle,
+    MaskType? maskType,
+    SnackNLoadDialogType? dialogType,
+  }) {
+    return showDialog(
+      title: title,
+      contentWidget: Text(content),
+      useAdaptive: useAdaptive,
+      titleStyle: titleStyle,
+      maskType: maskType,
+      dialogType: dialogType,
+      actionConfigs: [
+        ActionConfig(
+          label: okLabel,
+          onPressed: onOk ?? () {},
+        ),
+      ],
+    );
+  }
+
+  /// Show a dialog with Confirm/Cancel buttons
+  static Future<void> showDecisiveDialog({
+    required String title,
+    required String content,
+    String confirmLabel = 'Confirm',
+    String cancelLabel = 'Cancel',
+    required VoidCallback onConfirm,
+    VoidCallback? onCancel,
+    bool useAdaptive = true,
+    TextStyle? titleStyle,
+    MaskType? maskType,
+    SnackNLoadDialogType? dialogType,
+  }) {
+    return showDialog(
+      title: title,
+      contentWidget: Text(content),
+      useAdaptive: useAdaptive,
+      titleStyle: titleStyle,
+      maskType: maskType,
+      dialogType: dialogType,
+      actionConfigs: [
+        ActionConfig(
+          label: cancelLabel,
+          onPressed: onCancel ?? () {},
+          buttonVariant: ButtonVariant.ghost,
+        ),
+        ActionConfig(
+          label: confirmLabel,
+          onPressed: onConfirm,
+          buttonVariant: ButtonVariant.primary,
+        ),
+      ],
+    );
+  }
+
+  /// Show a dialog with custom actions
+  static Future<void> showActionDialog({
+    required String title,
+    required Widget content,
+    required List<ActionConfig> actions,
+    bool useAdaptive = true,
+    TextStyle? titleStyle,
+    MaskType? maskType,
+    SnackNLoadDialogType? dialogType,
+  }) {
+    return showDialog(
+      title: title,
+      contentWidget: content,
+      useAdaptive: useAdaptive,
+      titleStyle: titleStyle,
+      maskType: maskType,
+      dialogType: dialogType,
+      actionConfigs: actions,
+    );
+  }
+
+  /// Show a full screen dialog
+  static Future<void> showFullScreenDialog({
+    required String title,
+    required Widget content,
+    Widget? titleWidget,
+    List<ActionConfig>? actions,
+    TextStyle? titleStyle,
+  }) {
+    return showDialog(
+      title: title,
+      titleWidget: titleWidget,
+      contentWidget: content,
+      useAdaptive: false, // Full screen usually uses custom layout
+      titleStyle: titleStyle,
+      actionConfigs: actions,
+      isFullScreen: true,
+      maskType: MaskType.none, // Usually no mask for full screen
+    );
+  }
+
+  /// Enhanced loading with modern UI effects (blur, glassmorphism)
+  static Future<void> showEnhancedLoading({
+    String? status,
+    Widget? indicator,
+    MaskType? maskType,
+    bool? dismissOnTap,
+    bool useBlur = true,
+    bool useGlassmorphism = true,
+  }) {
+    Widget w = indicator ?? (_instance.indicatorWidget ?? LoadingIndicator());
+    return _instance._showEnhanced(
+      status: status,
+      maskType: maskType,
+      dismissOnTap: dismissOnTap,
+      w: w,
+      useBlur: useBlur,
+      useGlassmorphism: useGlassmorphism,
+    );
+  }
+
+  /// Enhanced snackbar with rich UI features like GetX
+  static Future<void> showEnhancedSnackBar(
+    String message, {
+    Duration? duration,
+    SnackNLoadPosition? position,
+    MaskType? maskType,
+    bool? dismissOnTap,
+    bool? showIcon,
+    String? title,
+    SnackNLoadType? type,
+    TextStyle? titleStyle,
+    TextStyle? messageStyle,
+    bool? showDivider,
+    EdgeInsets? contentPadding,
+    EdgeInsets? margin,
+    Color? backgroundColor,
+    bool showProgressBar = true,
+    Widget? leading,
+    Widget? trailing,
+    VoidCallback? onTap,
+    bool enableSwipeToDismiss = true,
+    bool useGlassmorphism = true,
+    bool showCloseButton = true,
+  }) {
+    return _instance._showEnhancedSnackbar(
+      message: message,
+      showIcon: showIcon,
+      title: title,
+      type: type ?? SnackNLoadType.info,
+      showDivider: showDivider,
+      messageStyle: messageStyle,
+      titleStyle: titleStyle,
+      duration: duration ?? const Duration(seconds: 3),
+      position: position ?? SnackNLoadPosition.top,
+      maskType: maskType,
+      dismissOnTap: dismissOnTap,
+      margin: margin,
+      contentPadding: contentPadding,
+      backgroundColor: backgroundColor,
+      showProgressBar: showProgressBar,
+      leading: leading,
+      trailing: trailing,
+      onTap: onTap,
+      enableSwipeToDismiss: enableSwipeToDismiss,
+      useGlassmorphism: useGlassmorphism,
+      showCloseButton: showCloseButton,
+    );
+  }
+
+  /// Show interactive tutorial/onboarding tooltips
+  ///
+  /// Displays a series of tutorial steps that highlight specific widgets
+  /// and guide users through app features.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = TutorialController(
+  ///   steps: [
+  ///     TutorialStep(
+  ///       id: 'step1',
+  ///       title: 'Welcome!',
+  ///       description: 'This is the home button',
+  ///       targetKey: homeButtonKey,
+  ///     ),
+  ///   ],
+  /// );
+  ///
+  /// SnackNLoad.showTutorial(
+  ///   controller: controller,
+  ///   onComplete: () => print('Tutorial completed!'),
+  /// );
+  /// ```
+  static Future<void> showTutorial({
+    required TutorialController controller,
+    required VoidCallback onComplete,
+    Color? overlayColor,
+    double? overlayOpacity,
+    bool useBlur = true,
+    Duration animationDuration = const Duration(milliseconds: 300),
+  }) {
+    return _instance._showTutorial(
+      controller: controller,
+      onComplete: onComplete,
+      overlayColor: overlayColor,
+      overlayOpacity: overlayOpacity,
+      useBlur: useBlur,
+      animationDuration: animationDuration,
+    );
+  }
+
+  /// Show feature spotlight
+  ///
+  /// Highlights a specific widget with a non-blocking spotlight effect.
+  ///
+  /// Example:
+  /// ```dart
+  /// SnackNLoad.showSpotlight(
+  ///   config: SpotlightConfig(
+  ///     id: 'new_feature',
+  ///     targetKey: myButtonKey,
+  ///     title: 'New Feature!',
+  ///     description: 'Check out this new button',
+  ///     icon: Icons.star,
+  ///     shape: SpotlightShape.circle,
+  ///   ),
+  /// );
+  /// ```
+  static Future<void> showSpotlight({
+    required SpotlightConfig config,
+    Color? overlayColor,
+    double overlayOpacity = 0.8,
+    bool useBlur = true,
+  }) {
+    return _instance._showSpotlight(
+      config: config,
+      overlayColor: overlayColor,
+      overlayOpacity: overlayOpacity,
+      useBlur: useBlur,
     );
   }
 
@@ -598,6 +858,228 @@ class SnackNLoad {
         });
       }
     });
+    _markNeedsBuild();
+    return completer.future;
+  }
+
+  /// Enhanced show with modern UI effects
+  Future<void> _showEnhanced({
+    Widget? w,
+    String? status,
+    Duration? duration,
+    MaskType? maskType,
+    bool? dismissOnTap,
+    SnackNLoadPosition? position,
+    bool useBlur = true,
+    bool useGlassmorphism = true,
+  }) async {
+    assert(
+      overlayEntry != null,
+      'You should call SnackNLoadLoading.init() in your MaterialApp',
+    );
+
+    if (loadingStyle == LoadingStyle.custom) {
+      assert(
+        backgroundColor != null,
+        'while loading style is custom, backgroundColor should not be null',
+      );
+      assert(
+        indicatorColor != null,
+        'while loading style is custom, indicatorColor should not be null',
+      );
+      assert(
+        textColor != null,
+        'while loading style is custom, textColor should not be null',
+      );
+    }
+
+    maskType ??= _instance.maskType;
+    if (maskType == MaskType.custom) {
+      assert(
+        maskColor != null,
+        'while mask type is custom, maskColor should not be null',
+      );
+    }
+
+    position ??= SnackNLoadPosition.center;
+    bool animation = _w == null;
+    _progressKey = null;
+    if (_key != null) await dismiss(animation: false);
+
+    Completer<void> completer = Completer<void>();
+    _key = GlobalKey<LoadingContainerState>();
+    _w = EnhancedLoadingContainer(
+      key: _key,
+      status: status,
+      indicator: w,
+      animation: animation,
+      position: position,
+      maskType: maskType,
+      dismissOnTap: dismissOnTap,
+      completer: completer,
+      useBlur: useBlur,
+      useGlassmorphism: useGlassmorphism,
+    );
+    completer.future.whenComplete(() {
+      _callback(LoadingStatus.show);
+      if (duration != null) {
+        _cancelTimer();
+        _timer = Timer(duration, () async {
+          await dismiss();
+        });
+      }
+    });
+    _markNeedsBuild();
+    return completer.future;
+  }
+
+  /// Enhanced snackbar with rich UI features
+  Future<void> _showEnhancedSnackbar({
+    required String message,
+    Duration? duration,
+    MaskType? maskType,
+    bool? dismissOnTap,
+    bool? showIcon,
+    bool? showDivider,
+    String? title,
+    SnackNLoadPosition? position,
+    required SnackNLoadType type,
+    TextStyle? titleStyle,
+    TextStyle? messageStyle,
+    EdgeInsets? contentPadding,
+    EdgeInsets? margin,
+    Color? backgroundColor,
+    bool showProgressBar = true,
+    Widget? leading,
+    Widget? trailing,
+    VoidCallback? onTap,
+    bool enableSwipeToDismiss = true,
+    bool useGlassmorphism = true,
+    bool showCloseButton = true,
+  }) async {
+    assert(
+      overlayEntry != null,
+      'You should call SnackNLoadLoading.init() in your MaterialApp',
+    );
+
+    maskType ??= _instance.maskType;
+    if (maskType == MaskType.custom) {
+      assert(
+        maskColor != null,
+        'while mask type is custom, maskColor should not be null',
+      );
+    }
+
+    position ??= SnackNLoadPosition.top;
+    bool animation = _w == null;
+    _progressKey = null;
+    if (_key != null) await dismiss(animation: false);
+
+    Completer<void> completer = Completer<void>();
+    _key = GlobalKey<LoadingContainerState>();
+    _w = EnhancedSnackBarContainer(
+      key: _key,
+      type: type,
+      message: message,
+      title: title,
+      showIcon: showIcon,
+      animation: animation,
+      position: position,
+      maskType: maskType,
+      dismissOnTap: dismissOnTap,
+      completer: completer,
+      titleStyle: titleStyle,
+      messageStyle: messageStyle,
+      showDivider: showDivider,
+      backgroundColor: backgroundColor,
+      contentPadding: contentPadding,
+      margin: margin,
+      showProgressBar: showProgressBar,
+      duration: duration,
+      leading: leading,
+      trailing: trailing,
+      onTap: onTap,
+      enableSwipeToDismiss: enableSwipeToDismiss,
+      useGlassmorphism: useGlassmorphism,
+      showCloseButton: showCloseButton,
+    );
+    completer.future.whenComplete(() {
+      _callback(LoadingStatus.show);
+      if (duration != null) {
+        _cancelTimer();
+        _timer = Timer(duration, () async {
+          await dismiss();
+        });
+      }
+    });
+    _markNeedsBuild();
+    return completer.future;
+  }
+
+  /// Private method to show tutorial overlay
+  Future<void> _showTutorial({
+    required TutorialController controller,
+    required VoidCallback onComplete,
+    Color? overlayColor,
+    double? overlayOpacity,
+    bool useBlur = true,
+    Duration animationDuration = const Duration(milliseconds: 300),
+  }) async {
+    assert(
+      overlayEntry != null,
+      'You should call SnackNLoad.init() in your MaterialApp',
+    );
+
+    Completer<void> completer = Completer<void>();
+
+    _w = TutorialOverlay(
+      controller: controller,
+      onComplete: () {
+        onComplete();
+        dismiss();
+      },
+      overlayColor: overlayColor,
+      overlayOpacity: overlayOpacity,
+      useBlur: useBlur,
+      animationDuration: animationDuration,
+    );
+
+    completer.future.whenComplete(() {
+      _callback(LoadingStatus.show);
+    });
+
+    _markNeedsBuild();
+    return completer.future;
+  }
+
+  /// Private method to show feature spotlight
+  Future<void> _showSpotlight({
+    required SpotlightConfig config,
+    Color? overlayColor,
+    double overlayOpacity = 0.8,
+    bool useBlur = true,
+  }) async {
+    assert(
+      overlayEntry != null,
+      'You should call SnackNLoad.init() in your MaterialApp',
+    );
+
+    Completer<void> completer = Completer<void>();
+
+    _w = FeatureSpotlight(
+      config: config,
+      onDismiss: () {
+        dismiss();
+      },
+      overlayColor: overlayColor,
+      overlayOpacity: overlayOpacity,
+      useBlur: useBlur,
+    );
+
+    completer.future.whenComplete(() {
+      _callback(LoadingStatus.show);
+    });
+
     _markNeedsBuild();
     return completer.future;
   }

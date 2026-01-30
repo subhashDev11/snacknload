@@ -8,15 +8,42 @@ SnackNLoad is a Flutter package that provides a powerful, customizable, and easy
 
 ## Features
 
+## Features
+
+### 📚 Detailed Documentation
+
+For complete guides on specific features, please refer to:
+
+- **[Enhanced UI Features (Loaders & Snackbars)](./ENHANCED_UI.md)**: Full guide to glassmorphism, rich snackbars, and modern loaders.
+- **[Tutorial & Tooltips System](./TUTORIAL_FEATURE.md)**: Comprehensive guide on implementing interactive tutorials and onboarding.
+
+### 🎨 Enhanced UI (NEW!)
+
+- **Rich Snackbars** with glassmorphism, progress bars, and swipe-to-dismiss (like GetX)
+- **Modern Loading** indicators with blur effects and smooth animations
+- **Interactive Elements** with tap callbacks and custom widgets
+- **Premium Design** with gradients, shadows, and micro-interactions
+
+### 🎓 Tutorial & Tooltips (NEW!)
+
+- **Interactive Onboarding** - Guide users through your app features
+- **Widget Highlighting** - Spotlight specific UI elements with pulse animations
+- **Smart Positioning** - Auto-positioning or manual control for tooltips
+- **Customizable Steps** - Full control over colors, icons, text, and behavior
+- **Progress Tracking** - Built-in progress bar and step navigation
+- **Auto-Advance** - Optional automatic progression between steps
+
+### 📦 Core Features
+
 - Multiple loading styles and indicators.
-- Customizable snackbars with different types (success, error, info).
+- Customizable snackbars with different types (success, error, info, warning).
 - Flexible masking options during loading.
 - Custom animations for loading indicators.
 - Support for toast notifications at different positions (top, center, bottom).
 - Easy integration and configuration.
 - Styled snackbar with position options of top, center, bottom.
 - Show dialog with customization options and adaptive support.
-- All features are accessible after initilization and no need to provide context because snacknload uses there in built global context.
+- All features are accessible after initialization and no need to provide context because snacknload uses their in-built global context.
 
 ## Installation
 
@@ -137,6 +164,119 @@ SnackNLoad.showSnackBar(
 );
 ```
 
+### 🎨 Enhanced UI Features (NEW!)
+
+#### Enhanced Loading with Glassmorphism
+
+```dart
+SnackNLoad.showEnhancedLoading(
+  status: 'Loading...',
+  maskType: MaskType.black,
+  useBlur: true,              // Blur backdrop effect
+  useGlassmorphism: true,     // Modern glass effect
+);
+```
+
+#### Enhanced Snackbar with Rich Features
+
+```dart
+SnackNLoad.showEnhancedSnackBar(
+  '🎉 Operation completed successfully!',
+  title: 'Success',
+  type: SnackNLoadType.success,
+  position: SnackNLoadPosition.top,
+  showProgressBar: true,          // Auto-dismiss progress bar
+  duration: Duration(seconds: 4),
+  enableSwipeToDismiss: true,     // Swipe to dismiss
+  useGlassmorphism: true,         // Glassmorphism effect
+  showCloseButton: true,          // Show close button
+  onTap: () {                     // Tap callback
+    print('Snackbar tapped!');
+  },
+);
+```
+
+#### Interactive Snackbar with Custom Widgets
+
+```dart
+SnackNLoad.showEnhancedSnackBar(
+  'You have a new message',
+  title: 'Notification',
+  type: SnackNLoadType.info,
+  onTap: () => Navigator.push(...),
+  trailing: Icon(
+    Icons.arrow_forward_ios,
+    color: Colors.white,
+    size: 16,
+  ),
+);
+```
+
+### 🎓 Tutorial & Tooltips (NEW!)
+
+#### Basic Tutorial
+
+```dart
+// 1. Create GlobalKeys for widgets
+final GlobalKey homeKey = GlobalKey();
+final GlobalKey searchKey = GlobalKey();
+
+// 2. Assign keys to widgets
+IconButton(
+  key: homeKey,
+  icon: Icon(Icons.home),
+  onPressed: () {},
+)
+
+// 3. Create and show tutorial
+final controller = TutorialController(
+  steps: [
+    TutorialStep(
+      id: 'home',
+      title: 'Home Button',
+      description: 'Tap here to return to the home screen',
+      targetKey: homeKey,
+      icon: Icons.home_rounded,
+    ),
+    TutorialStep(
+      id: 'search',
+      title: 'Search',
+      description: 'Find anything in the app',
+      targetKey: searchKey,
+      icon: Icons.search_rounded,
+    ),
+  ],
+);
+
+SnackNLoad.showTutorial(
+  controller: controller,
+  onComplete: () => print('Tutorial completed!'),
+);
+```
+
+#### Advanced Tutorial with Custom Styling
+
+```dart
+TutorialStep(
+  id: 'custom',
+  title: 'Custom Step',
+  description: 'This step has custom colors and auto-advances',
+  targetKey: myKey,
+  backgroundColor: Color(0xFF8B5CF6),
+  textColor: Colors.white,
+  icon: Icons.star_rounded,
+  showPulse: true,
+  autoAdvanceDuration: Duration(seconds: 3),
+  dismissOnTapOutside: true,
+  onShow: () => print('Step shown'),
+  onComplete: () => print('Step completed'),
+)
+```
+
+**📖 See [TUTORIAL_FEATURE.md](TUTORIAL_FEATURE.md) for complete documentation and examples.**
+
+> 📖 **For detailed documentation on enhanced UI features, see [ENHANCED_UI.md](ENHANCED_UI.md)**
+
 #### Custom Animation
 
 Create a custom animation for the loading indicator by extending `SnackNLoadLoadingAnimation`:
@@ -158,6 +298,61 @@ class CustomAnimation extends SnackNLoadLoadingAnimation {
     );
   }
 }
+```
+
+### 🧩 Enhanced Dialog System (NEW!)
+
+#### Multiple Dialog Styles
+
+Choose from Material, Cupertino, or our new Enhanced custom style!
+
+```dart
+// Enhanced Style (Custom UI)
+SnackNLoad.showOkDialog(
+  title: 'Enhanced',
+  content: 'This uses the new Enhanced style!',
+  dialogType: SnackNLoadDialogType.enhanced,
+);
+
+// iOS Style
+SnackNLoad.showOkDialog(
+  title: 'Cupertino',
+  content: 'This looks like iOS!',
+  dialogType: SnackNLoadDialogType.cupertino,
+);
+```
+
+#### Convenience Methods
+
+**Simple OK Dialog**
+
+```dart
+SnackNLoad.showOkDialog(
+    title: 'Success',
+    content: 'Operation completed!',
+    onOk: () => print('OK'),
+);
+```
+
+**Confirm/Cancel Dialog**
+
+```dart
+SnackNLoad.showDecisiveDialog(
+    title: 'Delete?',
+    content: 'Are you sure?',
+    confirmLabel: 'Delete',
+    onConfirm: () => deleteItem(),
+    onCancel: () => print('Cancelled'),
+);
+```
+
+**Full Screen Dialog**
+
+```dart
+SnackNLoad.showFullScreenDialog(
+    title: 'Details',
+    content: DetailsPage(),
+);
 ```
 
 ## Advanced Usage
@@ -212,8 +407,6 @@ We welcome contributions! Please feel free to open issues or submit pull request
 
 **Connect with me:**
 
-* **GitHub:** https://github.com/subhashDev11
-* **LinkedIn:** https://www.linkedin.com/in/subhashcs/
-* **Medium:** https://medium.com/@subhashchandrashukla
-
-
+- **GitHub:** https://github.com/subhashDev11
+- **LinkedIn:** https://www.linkedin.com/in/subhashcs/
+- **Medium:** https://medium.com/@subhashchandrashukla

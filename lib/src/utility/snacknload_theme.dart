@@ -35,7 +35,7 @@ class SnackNLoadTheme {
     return maskType == MaskType.custom
         ? SnackNLoad.instance.maskColor!
         : maskType == MaskType.black
-            ? Colors.black.withOpacity(0.5)
+            ? Colors.black.withValues(alpha: 0.5)
             : Colors.transparent;
   }
 

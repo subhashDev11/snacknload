@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:example/enhanced_demo.dart';
+import 'package:example/tutorial_demo.dart';
+import 'package:example/dialog_demo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:snacknload/snacknload.dart';
@@ -23,6 +26,7 @@ void configLoading() {
   //   ..dismissOnTap = false
   //   ..customAnimation = CustomAnimation();
   SnackNLoad.instance
+    ..userInteractions = true
     ..displayDuration = const Duration(milliseconds: 1000)
     ..indicatorType = IndicatorType.wave
     ..loadingStyle = LoadingStyle.custom
@@ -102,6 +106,39 @@ class _MyHomePageState extends State<_MyHomePage> {
                 runAlignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
+                  TextButton(
+                    child: Text('Dialogs'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DialogDemoPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Tutorial'),
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TutorialDemoPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Enhanced V2 Demo'),
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EnhancedDemoPage(),
+                        ),
+                      );
+                    },
+                  ),
                   TextButton(
                     child: Text('Dismiss'),
                     onPressed: () async {

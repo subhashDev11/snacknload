@@ -69,3 +69,11 @@ enum LoadingStatus {
 }
 
 typedef LoadingStatusCallback = void Function(LoadingStatus status);
+
+/// Dialog UI Type
+enum SnackNLoadDialogType {
+  adaptive, // Uses AlertDialog.adaptive (Default)
+  material, // Uses AlertDialog
+  cupertino, // Uses CupertinoAlertDialog
+  enhanced, // Uses custom styled container
+}

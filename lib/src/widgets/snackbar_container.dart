@@ -226,91 +226,146 @@ class _Indicator extends StatelessWidget {
   IconData _getIcon() {
     switch (type) {
       case SnackNLoadType.success:
-        return Icons.check_circle;
+        return Icons.check_circle_rounded;
       case SnackNLoadType.error:
-        return Icons.error;
+        return Icons.error_rounded;
       case SnackNLoadType.warning:
-        return Icons.warning;
+        return Icons.warning_rounded;
       default:
-        return Icons.info;
+        return Icons.info_rounded;
     }
+  }
+
+  Color _getDarkerColor(Color color) {
+    return Color.fromARGB(
+      color.alpha,
+      (color.r * 255.0 * 0.85).round().clamp(0, 255),
+      (color.g * 255.0 * 0.85).round().clamp(0, 255),
+      (color.b * 255.0 * 0.85).round().clamp(0, 255),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = _getBackgroundColor(Theme.of(context));
+
     return Container(
-      margin: margin ?? const EdgeInsets.all(50.0),
-      constraints: BoxConstraints(
-        maxWidth: 400,
+      margin:
+          margin ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      constraints: const BoxConstraints(
+        maxWidth: 500,
+        minHeight: 60,
       ),
       decoration: BoxDecoration(
-        color: _getBackgroundColor(Theme.of(context)),
-        borderRadius: BorderRadius.circular(
-          SnackNLoadTheme.radius,
-        ),
-        boxShadow: SnackNLoadTheme.boxShadow,
-      ),
-      padding: contentPadding ?? SnackNLoadTheme.contentPadding,
-      child: Builder(builder: (context) {
-        final content = Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            if (title != null)
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 4,
-                ),
-                child: Text(
-                  title!,
-                  style: titleStyle ??
-                      TextStyle(
-                        color: Colors.white,
-                        fontSize: SnackNLoadTheme.fontSize,
-                      ),
-                  textAlign: SnackNLoadTheme.textAlign,
-                ),
-              ),
-            if (title != null && showDivider)
-              Divider(
-                color: Colors.white,
-              ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 5,
-              ),
-              child: Text(
-                message,
-                style: messageStyle ??
-                    TextStyle(
-                      color: Colors.white,
-                      fontSize: SnackNLoadTheme.fontSize,
-                    ),
-                textAlign: SnackNLoadTheme.textAlign,
-              ),
-            ),
+        // Subtle gradient for depth
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            bgColor,
+            _getDarkerColor(bgColor),
           ],
-        );
-        return showIcon
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    _getIcon(),
-                    size: 25,
-                    color: Colors.white,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        // Enhanced shadow for elevation
+        boxShadow: [
+          BoxShadow(
+            color: bgColor.withValues(alpha: 0.4),
+            blurRadius: 20,
+            spreadRadius: 0,
+            offset: const Offset(0, 8),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 10,
+            spreadRadius: 0,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: contentPadding ??
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          child: Builder(builder: (context) {
+            final content = Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                if (title != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Text(
+                      title!,
+                      style: titleStyle ??
+                          const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.2,
+                          ),
+                      textAlign: TextAlign.left,
+                    ),
                   ),
-                  SizedBox(
-                    width: 10,
+                if (title != null && showDivider)
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 8, top: 4),
+                    height: 1,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.white.withValues(alpha: 0.0),
+                          Colors.white.withValues(alpha: 0.3),
+                          Colors.white.withValues(alpha: 0.0),
+                        ],
+                      ),
+                    ),
                   ),
-                  Expanded(
-                    child: content,
-                  ),
-                ],
-              )
-            : content;
-      }),
+                Text(
+                  message,
+                  style: messageStyle ??
+                      TextStyle(
+                        color: Colors.white.withValues(alpha: 0.95),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        height: 1.4,
+                        letterSpacing: 0.1,
+                      ),
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            );
+
+            return showIcon
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Icon with circular background
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          _getIcon(),
+                          size: 24,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: content,
+                      ),
+                    ],
+                  )
+                : content;
+          }),
+        ),
+      ),
     );
   }
 }
