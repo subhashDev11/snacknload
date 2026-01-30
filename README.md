@@ -4,7 +4,11 @@ SnackNLoad is a Flutter package that provides a powerful, customizable, and easy
 
 **Pub.dev Link:** https://pub.dev/packages/snacknload
 
-![enhance-ui](https://github.com/user-attachments/assets/c1706620-2f26-46a4-8fe6-5878b41d2ae5) ![tutorial](https://github.com/user-attachments/assets/34bdc434-7338-4e4a-a775-5799df110443)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c1706620-2f26-46a4-8fe6-5878b41d2ae5" width="45%" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="https://github.com/user-attachments/assets/34bdc434-7338-4e4a-a775-5799df110443" width="45%" />
+</p>
 
 ![snacknload](https://github.com/user-attachments/assets/fa8f9f77-7f7d-4345-9512-7760301c9d5b)
 
