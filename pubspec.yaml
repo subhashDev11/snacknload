@@ -22,6 +22,10 @@ dev_dependencies:
 flutter:
 
 screenshots:
+  - description: "Enhance loader and snackbar"
+    path: screenshots/enhance-ui.gif
+  - description: "Tooltips and Tutorials"
+    path: screenshots/tutorial.gif    
   - description: "This is shows the loader."
     path: screenshots/loader.png
   - description: "This is shows the complete package feature."
