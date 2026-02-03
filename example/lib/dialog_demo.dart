@@ -9,11 +9,10 @@ class DialogDemoPage extends StatefulWidget {
 }
 
 class _DialogDemoPageState extends State<DialogDemoPage> {
-
   SnackNLoadDialogType _dialogType = SnackNLoadDialogType.enhanced;
 
   @override
-Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dialog Examples'),
