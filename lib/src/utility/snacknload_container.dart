@@ -272,7 +272,7 @@ class SnackNLoad {
   }) async {
     assert(
       overlayEntry != null,
-      'You should call SnackNLoadLoading.init() in your MaterialApp',
+      'You should call SnackNLoad.init() in your MaterialApp',
     );
 
     maskType ??= _instance.maskType;
@@ -823,7 +823,7 @@ class SnackNLoad {
   }) async {
     assert(
       overlayEntry != null,
-      'You should call SnackNLoadLoading.init() in your MaterialApp',
+      'You should call SnackNLoad.init() in your MaterialApp',
     );
 
     if (loadingStyle == LoadingStyle.custom) {
@@ -909,7 +909,7 @@ class SnackNLoad {
   }) async {
     assert(
       overlayEntry != null,
-      'You should call SnackNLoadLoading.init() in your MaterialApp',
+      'You should call SnackNLoad.init() in your MaterialApp',
     );
 
     maskType ??= _instance.maskType;

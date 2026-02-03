@@ -1,3 +1,5 @@
+## 3.0.1 - Minor exception message changes 🛠️
+
 ## 3.0.0 - Styles Reset & Configuration Fixes 🛠️
 
 ### ⚠️ Breaking Changes
