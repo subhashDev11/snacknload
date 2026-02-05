@@ -1,3 +1,7 @@
+## 3.0.2 - Fixes & Improvements 🛠️
+
+- **Progress Indicator Update**: Added missing `dismissOnTap` parameter support to `SnackNLoad.showProgress()`. Now you can control whether users can dismiss the progress dialog by tapping the mask.
+
 ## 3.0.1 - Minor exception message changes 🛠️
 
 ## 3.0.0 - Styles Reset & Configuration Fixes 🛠️

@@ -198,6 +198,7 @@ class SnackNLoad {
     String? status,
     MaskType? maskType,
     Color? maskColor,
+    bool? dismissOnTap,
   }) async {
     assert(
       value >= 0.0 && value <= 1.0,
@@ -223,7 +224,7 @@ class SnackNLoad {
         status: status,
         maskType: maskType,
         maskColor: maskColor,
-        dismissOnTap: false,
+        dismissOnTap: dismissOnTap,
         w: w,
       );
       _instance._progressKey = progressKey;

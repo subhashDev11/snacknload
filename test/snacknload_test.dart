@@ -118,6 +118,26 @@ void main() {
       expect(foundNoShadow, isTrue,
           reason: "Could not find a content container with no shadow");
     });
+
+    testWidgets('showProgress() accepts dismissOnTap parameter and passes it',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(createTestApp());
+
+      // Show progress with dismissOnTap: true
+      await SnackNLoad.showProgress(0.5,
+          status: 'Progress', dismissOnTap: true);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      // Verify container exists
+      final containerFinder = find.byType(EnhancedLoadingContainer);
+      expect(containerFinder, findsOneWidget);
+
+      // Verify dismissOnTap property was passed correctly
+      final container =
+          tester.widget<EnhancedLoadingContainer>(containerFinder);
+      expect(container.dismissOnTap, isTrue);
+    });
   });
 
   group('SnackNLoad Snackbar', () {
