@@ -46,6 +46,9 @@ class EnhancedLoadingContainer extends StatefulWidget {
   /// Custom mask color for MaskType.custom
   final Color? maskColor;
 
+  /// Blur intensity for the backdrop
+  final double backdropBlur;
+
   const EnhancedLoadingContainer({
     super.key,
     this.indicator,
@@ -55,9 +58,10 @@ class EnhancedLoadingContainer extends StatefulWidget {
     this.maskType,
     this.completer,
     this.animation = true,
-    this.useBlur = true,
-    this.useGlassmorphism = true,
+    this.useBlur = false,
+    this.useGlassmorphism = false,
     this.maskColor,
+    this.backdropBlur = 5.0,
   });
 
   @override
@@ -202,8 +206,10 @@ class EnhancedLoadingContainerState extends State<EnhancedLoadingContainer>
                         child: widget.useBlur
                             ? BackdropFilter(
                                 filter: ImageFilter.blur(
-                                  sigmaX: 5.0 * _fadeAnimation.value,
-                                  sigmaY: 5.0 * _fadeAnimation.value,
+                                  sigmaX: widget.backdropBlur *
+                                      _fadeAnimation.value,
+                                  sigmaY: widget.backdropBlur *
+                                      _fadeAnimation.value,
                                 ),
                                 child: Container(
                                   width: double.infinity,
@@ -220,8 +226,10 @@ class EnhancedLoadingContainerState extends State<EnhancedLoadingContainer>
                     : widget.useBlur
                         ? BackdropFilter(
                             filter: ImageFilter.blur(
-                              sigmaX: 5.0 * _fadeAnimation.value,
-                              sigmaY: 5.0 * _fadeAnimation.value,
+                              sigmaX:
+                                  widget.backdropBlur * _fadeAnimation.value,
+                              sigmaY:
+                                  widget.backdropBlur * _fadeAnimation.value,
                             ),
                             child: Container(
                               width: double.infinity,

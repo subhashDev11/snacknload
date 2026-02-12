@@ -181,6 +181,9 @@ class SnackNLoad {
     bool? dismissOnTap,
     SnackNLoadPosition? position,
     Color? maskColor,
+    bool? useBlur,
+    bool? useGlassmorphism,
+    double? backdropBlur,
   }) async {
     Widget w = indicator ?? (_instance.indicatorWidget ?? LoadingIndicator());
     return _instance._show(
@@ -189,6 +192,9 @@ class SnackNLoad {
       dismissOnTap: dismissOnTap,
       w: w,
       maskColor: maskColor,
+      useBlur: useBlur,
+      useGlassmorphism: useGlassmorphism,
+      backdropBlur: backdropBlur,
     );
   }
 
@@ -573,8 +579,9 @@ class SnackNLoad {
     Widget? indicator,
     MaskType? maskType,
     bool? dismissOnTap,
-    bool useBlur = true,
+    bool useBlur = false,
     bool useGlassmorphism = false,
+    double backdropBlur = 5.0,
     Color? maskColor,
   }) {
     Widget w = indicator ?? (_instance.indicatorWidget ?? LoadingIndicator());
@@ -586,6 +593,7 @@ class SnackNLoad {
       useBlur: useBlur,
       useGlassmorphism: useGlassmorphism,
       maskColor: maskColor,
+      backdropBlur: backdropBlur,
     );
   }
 
@@ -748,6 +756,9 @@ class SnackNLoad {
     bool? dismissOnTap,
     SnackNLoadPosition? position,
     Color? maskColor,
+    bool? useBlur,
+    bool? useGlassmorphism,
+    double? backdropBlur,
   }) async {
     return _showEnhanced(
       w: w,
@@ -757,8 +768,9 @@ class SnackNLoad {
       dismissOnTap: dismissOnTap,
       position: position,
       maskColor: maskColor,
-      useBlur: true,
-      useGlassmorphism: false,
+      useBlur: useBlur ?? false,
+      useGlassmorphism: useGlassmorphism ?? false,
+      backdropBlur: backdropBlur ?? 5.0,
     );
   }
 
@@ -818,9 +830,10 @@ class SnackNLoad {
     MaskType? maskType,
     bool? dismissOnTap,
     SnackNLoadPosition? position,
-    bool useBlur = true,
+    bool useBlur = false,
     bool useGlassmorphism = false,
     Color? maskColor,
+    double backdropBlur = 5.0,
   }) async {
     assert(
       overlayEntry != null,
@@ -869,6 +882,7 @@ class SnackNLoad {
       useBlur: useBlur,
       useGlassmorphism: useGlassmorphism,
       maskColor: effectiveMaskColor,
+      backdropBlur: backdropBlur,
     );
     completer.future.whenComplete(() {
       _callback(LoadingStatus.show);

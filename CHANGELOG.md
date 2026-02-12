@@ -1,3 +1,9 @@
+## 3.0.3 - Optional Blur & Enhanced Customization 🛠️
+
+- **Optional Blur & Glassmorphism**: `useBlur` and `useGlassmorphism` now default to `false` in `SnackNLoad.show()` and `SnackNLoad.showEnhancedLoading()`, providing a standard dialog appearance by default.
+- **New `backdropBlur` Parameter**: Added `backdropBlur` parameter to customize the intensity of the background blur (defaults to `5.0`).
+- **Enhanced Control**: Users now have granular control over the visual effects of the loading container.
+
 ## 3.0.2 - Fixes & Improvements 🛠️
 
 - **Progress Indicator Update**: Added missing `dismissOnTap` parameter support to `SnackNLoad.showProgress()`. Now you can control whether users can dismiss the progress dialog by tapping the mask.

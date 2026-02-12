@@ -282,65 +282,67 @@ class EnhancedSnackBarContainerState extends State<EnhancedSnackBarContainer>
               position: _slideAnimation,
               child: FadeTransition(
                 opacity: _fadeAnimation,
-                child: widget.enableSwipeToDismiss
-                    ? GestureDetector(
-                        onVerticalDragUpdate: (details) {
-                          setState(() {
-                            _dragDistance += details.delta.dy;
-                          });
-                        },
-                        onVerticalDragEnd: (details) {
-                          if (_dragDistance.abs() > 100) {
-                            _onDismiss();
-                          }
-                          setState(() {
-                            _dragDistance = 0;
-                          });
-                        },
-                        child: Transform.translate(
-                          offset: Offset(0, _dragDistance),
-                          child: _EnhancedIndicator(
-                            message: _message,
-                            title: widget.title,
-                            titleStyle: widget.titleStyle,
-                            messageStyle: widget.messageStyle,
-                            showIcon: widget.showIcon ?? true,
-                            type: widget.type,
-                            showDivider: widget.showDivider ?? false,
-                            backgroundColor: widget.backgroundColor,
-                            contentPadding: widget.contentPadding,
-                            margin: widget.margin,
-                            showProgressBar: widget.showProgressBar,
-                            progressAnimation: _progressController,
-                            leading: widget.leading,
-                            trailing: widget.trailing,
-                            onTap: widget.onTap != null ? _onTap : null,
-                            useGlassmorphism: widget.useGlassmorphism,
-                            showCloseButton: widget.showCloseButton,
-                            onClose: _onDismiss,
+                child: SafeArea(
+                  child: widget.enableSwipeToDismiss
+                      ? GestureDetector(
+                          onVerticalDragUpdate: (details) {
+                            setState(() {
+                              _dragDistance += details.delta.dy;
+                            });
+                          },
+                          onVerticalDragEnd: (details) {
+                            if (_dragDistance.abs() > 100) {
+                              _onDismiss();
+                            }
+                            setState(() {
+                              _dragDistance = 0;
+                            });
+                          },
+                          child: Transform.translate(
+                            offset: Offset(0, _dragDistance),
+                            child: _EnhancedIndicator(
+                              message: _message,
+                              title: widget.title,
+                              titleStyle: widget.titleStyle,
+                              messageStyle: widget.messageStyle,
+                              showIcon: widget.showIcon ?? true,
+                              type: widget.type,
+                              showDivider: widget.showDivider ?? false,
+                              backgroundColor: widget.backgroundColor,
+                              contentPadding: widget.contentPadding,
+                              margin: widget.margin,
+                              showProgressBar: widget.showProgressBar,
+                              progressAnimation: _progressController,
+                              leading: widget.leading,
+                              trailing: widget.trailing,
+                              onTap: widget.onTap != null ? _onTap : null,
+                              useGlassmorphism: widget.useGlassmorphism,
+                              showCloseButton: widget.showCloseButton,
+                              onClose: _onDismiss,
+                            ),
                           ),
+                        )
+                      : _EnhancedIndicator(
+                          message: _message,
+                          title: widget.title,
+                          titleStyle: widget.titleStyle,
+                          messageStyle: widget.messageStyle,
+                          showIcon: widget.showIcon ?? true,
+                          type: widget.type,
+                          showDivider: widget.showDivider ?? false,
+                          backgroundColor: widget.backgroundColor,
+                          contentPadding: widget.contentPadding,
+                          margin: widget.margin,
+                          showProgressBar: widget.showProgressBar,
+                          progressAnimation: _progressController,
+                          leading: widget.leading,
+                          trailing: widget.trailing,
+                          onTap: widget.onTap != null ? _onTap : null,
+                          useGlassmorphism: widget.useGlassmorphism,
+                          showCloseButton: widget.showCloseButton,
+                          onClose: _onDismiss,
                         ),
-                      )
-                    : _EnhancedIndicator(
-                        message: _message,
-                        title: widget.title,
-                        titleStyle: widget.titleStyle,
-                        messageStyle: widget.messageStyle,
-                        showIcon: widget.showIcon ?? true,
-                        type: widget.type,
-                        showDivider: widget.showDivider ?? false,
-                        backgroundColor: widget.backgroundColor,
-                        contentPadding: widget.contentPadding,
-                        margin: widget.margin,
-                        showProgressBar: widget.showProgressBar,
-                        progressAnimation: _progressController,
-                        leading: widget.leading,
-                        trailing: widget.trailing,
-                        onTap: widget.onTap != null ? _onTap : null,
-                        useGlassmorphism: widget.useGlassmorphism,
-                        showCloseButton: widget.showCloseButton,
-                        onClose: _onDismiss,
-                      ),
+                ),
               ),
             );
           },
