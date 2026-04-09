@@ -266,7 +266,7 @@ class DialogWidget extends StatelessWidget {
               ?.map(
                 (e) => CupertinoDialogAction(
                   onPressed: () async {
-                    await SnackNLoad.dismiss();
+                    if (e.autoDismiss) await SnackNLoad.dismiss();
                     e.onPressed();
                   },
                   isDefaultAction: e.buttonVariant == ButtonVariant.primary,
@@ -337,22 +337,27 @@ class DialogWidget extends StatelessWidget {
                       ),
                     ),
                   if (content != null)
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 24,
-                        right: 24,
-                        top: (title != null || titleWidget != null) ? 8 : 32,
-                        bottom: 24,
-                      ),
-                      child: DefaultTextStyle(
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: colorScheme.onSurfaceVariant,
-                          height: 1.5,
-                          letterSpacing: 0.1,
+                    Flexible(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 24,
+                            right: 24,
+                            top:
+                                (title != null || titleWidget != null) ? 8 : 32,
+                            bottom: 24,
+                          ),
+                          child: DefaultTextStyle(
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: colorScheme.onSurfaceVariant,
+                              height: 1.5,
+                              letterSpacing: 0.1,
+                            ),
+                            textAlign: TextAlign.center,
+                            child: content!,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
-                        child: content!,
                       ),
                     ),
                   if (actionConfigs != null && actionConfigs!.isNotEmpty)
@@ -372,7 +377,7 @@ class DialogWidget extends StatelessWidget {
                             padding: const EdgeInsets.only(bottom: 8),
                             child: ElevatedButton(
                               onPressed: () async {
-                                await SnackNLoad.dismiss();
+                                if (e.autoDismiss) await SnackNLoad.dismiss();
                                 e.onPressed();
                               },
                               style: ElevatedButton.styleFrom(
@@ -458,7 +463,7 @@ class DialogWidget extends StatelessWidget {
               ?.map(
                 (e) => TextButton(
                   onPressed: () async {
-                    await SnackNLoad.dismiss();
+                    if (e.autoDismiss) await SnackNLoad.dismiss();
                     e.onPressed();
                   },
                   child: Text(
@@ -477,7 +482,7 @@ class DialogWidget extends StatelessWidget {
                 icon: e.iconData,
                 variant: e.buttonVariant ?? ButtonVariant.primary,
                 onPressed: () async {
-                  await SnackNLoad.dismiss();
+                  if (e.autoDismiss) await SnackNLoad.dismiss();
                   e.onPressed();
                 },
               ),
@@ -492,11 +497,13 @@ class ActionConfig {
   final Function onPressed;
   final IconData? iconData;
   final ButtonVariant? buttonVariant;
+  final bool autoDismiss;
 
   ActionConfig({
     required this.label,
     required this.onPressed,
     this.iconData,
     this.buttonVariant,
+    this.autoDismiss = true,
   });
 }

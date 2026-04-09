@@ -13,6 +13,7 @@ import 'package:snacknload/src/widgets/overlay_entry.dart';
 import 'package:snacknload/src/widgets/loading.dart';
 import 'package:snacknload/src/widgets/snacknload_button.dart';
 import 'package:snacknload/src/animations/animation.dart';
+import 'package:snacknload/src/utility/selection_option.dart';
 import 'enums.dart';
 
 class SnackNLoad {
@@ -497,20 +498,30 @@ class SnackNLoad {
     );
   }
 
-  /// Show a dialog with Confirm/Cancel buttons
-  static Future<void> showDecisiveDialog({
+  /// Show a dialog with Confirm/Cancel buttons. Returns `true` if confirmed, `false` otherwise.
+  static Future<bool> showDecisiveDialog({
     String? title,
     String? content,
     String confirmLabel = 'Confirm',
     String cancelLabel = 'Cancel',
-    required VoidCallback onConfirm,
-    VoidCallback? onCancel,
     bool useAdaptive = true,
     TextStyle? titleStyle,
     MaskType? maskType,
     SnackNLoadDialogType? dialogType,
-  }) {
-    return showDialog(
+  }) async {
+    Completer<bool> completer = Completer<bool>();
+
+    late final LoadingStatusCallback callback;
+    callback = (status) {
+      if (status == LoadingStatus.dismiss) {
+        if (!completer.isCompleted) {
+          completer.complete(false);
+        }
+        SnackNLoad.removeCallback(callback);
+      }
+    };
+
+    await showDialog(
       title: title,
       contentWidget: content != null ? Text(content) : null,
       useAdaptive: useAdaptive,
@@ -520,16 +531,28 @@ class SnackNLoad {
       actionConfigs: [
         ActionConfig(
           label: cancelLabel,
-          onPressed: onCancel ?? () {},
+          autoDismiss: false,
+          onPressed: () {
+            if (!completer.isCompleted) completer.complete(false);
+            SnackNLoad.dismiss();
+          },
           buttonVariant: ButtonVariant.ghost,
         ),
         ActionConfig(
           label: confirmLabel,
-          onPressed: onConfirm,
+          autoDismiss: false,
+          onPressed: () {
+            if (!completer.isCompleted) completer.complete(true);
+            SnackNLoad.dismiss();
+          },
           buttonVariant: ButtonVariant.primary,
         ),
       ],
     );
+
+    SnackNLoad.addStatusCallback(callback);
+
+    return completer.future;
   }
 
   /// Show a dialog with custom actions
@@ -551,6 +574,179 @@ class SnackNLoad {
       dialogType: dialogType,
       actionConfigs: actions,
     );
+  }
+
+  /// Show a dialog with options to select from. Returns the value of the selected option.
+  static Future<T?> showSelectionDialog<T>({
+    String? title,
+    required List<SelectionOption<T>> options,
+    bool useAdaptive = true,
+    TextStyle? titleStyle,
+    MaskType? maskType,
+    SnackNLoadDialogType? dialogType,
+  }) async {
+    Completer<T?> completer = Completer<T?>();
+
+    late final LoadingStatusCallback callback;
+    callback = (status) {
+      if (status == LoadingStatus.dismiss) {
+        if (!completer.isCompleted) {
+          completer.complete(null);
+        }
+        SnackNLoad.removeCallback(callback);
+      }
+    };
+
+    // Use a custom content widget for options
+    Widget content = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: options.map((option) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: TextButton(
+            onPressed: () {
+              if (!completer.isCompleted) completer.complete(option.value);
+              SnackNLoad.dismiss();
+            },
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              alignment: Alignment.centerLeft,
+            ),
+            child: Row(
+              children: [
+                if (option.icon != null) ...[
+                  Icon(option.icon, size: 20),
+                  const SizedBox(width: 12),
+                ],
+                Expanded(
+                  child: Text(
+                    option.label,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                if (option.isDestructive)
+                  const Icon(Icons.warning, color: Colors.red, size: 20),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
+    );
+
+    // If using material/adaptive dialogs, using ListBody or similar is better,
+    // but our dialog system wraps content in scrollable, so this Column is safe.
+
+    await showDialog(
+      title: title,
+      contentWidget: content,
+      useAdaptive: useAdaptive,
+      titleStyle: titleStyle,
+      maskType: maskType,
+      dialogType: dialogType,
+      actionConfigs: [
+        ActionConfig(
+          label: 'Cancel',
+          autoDismiss: false,
+          onPressed: () {
+            if (!completer.isCompleted) completer.complete(null);
+            SnackNLoad.dismiss();
+          },
+          buttonVariant: ButtonVariant.ghost,
+        ),
+      ],
+    );
+
+    SnackNLoad.addStatusCallback(callback);
+
+    return completer.future;
+  }
+
+  /// Show a dialog with a text input field. Returns the input string.
+  static Future<String?> showInputDialog({
+    String? title,
+    String? message,
+    String? hintText,
+    String confirmLabel = 'Confirm',
+    String cancelLabel = 'Cancel',
+    bool useAdaptive = true,
+    TextStyle? titleStyle,
+    MaskType? maskType,
+    SnackNLoadDialogType? dialogType,
+    String? initialValue,
+  }) async {
+    Completer<String?> completer = Completer<String?>();
+    TextEditingController controller =
+        TextEditingController(text: initialValue ?? '');
+
+    late final LoadingStatusCallback callback;
+    callback = (status) {
+      if (status == LoadingStatus.dismiss) {
+        if (!completer.isCompleted) {
+          completer.complete(null);
+        }
+        SnackNLoad.removeCallback(callback);
+      }
+    };
+
+    Widget content = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (message != null) ...[
+          Text(message),
+          const SizedBox(height: 16),
+        ],
+        Material(
+          color: Colors.transparent,
+          child: TextField(
+            controller: controller,
+            autofocus: true,
+            decoration: InputDecoration(
+              hintText: hintText,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            ),
+          ),
+        ),
+      ],
+    );
+
+    await showDialog(
+      title: title,
+      contentWidget: content,
+      useAdaptive: useAdaptive,
+      titleStyle: titleStyle,
+      maskType: maskType,
+      dialogType: dialogType,
+      actionConfigs: [
+        ActionConfig(
+          label: cancelLabel,
+          autoDismiss: false,
+          onPressed: () {
+            if (!completer.isCompleted) completer.complete(null);
+            SnackNLoad.dismiss();
+          },
+          buttonVariant: ButtonVariant.ghost,
+        ),
+        ActionConfig(
+          label: confirmLabel,
+          autoDismiss: false,
+          onPressed: () {
+            if (!completer.isCompleted) completer.complete(controller.text);
+            SnackNLoad.dismiss();
+          },
+          buttonVariant: ButtonVariant.primary,
+        ),
+      ],
+    );
+
+    SnackNLoad.addStatusCallback(callback);
+
+    return completer.future;
   }
 
   /// Show a full screen dialog

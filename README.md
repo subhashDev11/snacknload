@@ -343,15 +343,49 @@ SnackNLoad.showOkDialog(
 ```
 
 **Confirm/Cancel Dialog**
+_(Now returns `Future<bool>`!)_
 
 ```dart
-SnackNLoad.showDecisiveDialog(
-    title: 'Delete?',
-    content: 'Are you sure?',
-    confirmLabel: 'Delete',
-    onConfirm: () => deleteItem(),
-    onCancel: () => print('Cancelled'),
+if (await SnackNLoad.showDecisiveDialog(
+  title: 'Delete Item?',
+  content: 'Are you sure you want to delete this item?',
+)) {
+  // User clicked Confirm
+  deleteItem();
+}
+```
+
+**Selection Dialog**
+_(Show a list of options)_
+
+```dart
+var selected = await SnackNLoad.showSelectionDialog<String>(
+  title: 'Select a Fruit',
+  options: [
+    SelectionOption(label: 'Apple', value: 'Apple', icon: Icons.apple),
+    SelectionOption(label: 'Banana', value: 'Banana'),
+    SelectionOption(label: 'Delete All', value: 'Delete', isDestructive: true),
+  ],
 );
+
+if (selected != null) {
+  print('Selected: $selected');
+}
+```
+
+**Input Dialog**
+_(Get text input from user)_
+
+```dart
+String? name = await SnackNLoad.showInputDialog(
+  title: 'Enter Name',
+  message: 'Please enter your full name.',
+  hintText: 'John Doe',
+);
+
+if (name != null) {
+  print('Hello, $name!');
+}
 ```
 
 **Full Screen Dialog**

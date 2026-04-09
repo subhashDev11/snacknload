@@ -1,3 +1,19 @@
+## 3.0.4 - Interactive Dialogs & Improvements 🚀
+
+### ✨ New Features
+
+- **`showSelectionDialog<T>`**: New method to easily show a list of options and wait for the user's selection. Returns a `Future<T?>` with the selected value. Supports icons and destructive actions.
+- **`showInputDialog`**: New method to prompt the user for text input. Returns a `Future<String?>`. Includes title, message, hint text, and initial value support.
+- **Scrollable Dialogs**: Enhanced dialog content is now wrapped in a scroll view, ensuring content is accessible even on smaller screens or when displaying large amounts of text.
+- **`ActionConfig.autoDismiss`**: Added `autoDismiss` property (default `true`) to `ActionConfig`. You can now control whether clicking an action button automatically closes the dialog.
+
+### 🔄 API Changes
+
+- **`showDecisiveDialog`**:
+  - **Now returns `Future<bool>`**: Instead of using `onConfirm`/`onCancel` callbacks, the method now returns `true` if confirmed and `false` if cancelled or dismissed.
+  - **Simplified Usage**: You can now simply `await` the result: `if (await SnackNLoad.showDecisiveDialog(...)) { ... }`.
+  - **Removed**: `onConfirm` and `onCancel` parameters have been removed in favor of the returned Future.
+
 ## 3.0.3 - Optional Blur & Enhanced Customization 🛠️
 
 - **Optional Blur & Glassmorphism**: `useBlur` and `useGlassmorphism` now default to `false` in `SnackNLoad.show()` and `SnackNLoad.showEnhancedLoading()`, providing a standard dialog appearance by default.

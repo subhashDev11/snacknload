@@ -10,3 +10,4 @@ export 'src/animations/animation.dart';
 export 'src/utility/enums.dart';
 export 'src/widgets/snacknload_button.dart';
 export 'src/widgets/dialog_container.dart';
+export 'src/utility/selection_option.dart';
