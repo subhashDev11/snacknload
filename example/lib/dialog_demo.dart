@@ -208,30 +208,30 @@ class _DialogDemoPageState extends State<DialogDemoPage> {
                   padding: const EdgeInsets.all(16),
                 ),
               ),
-              const SizedBox(height: 16),
+              // const SizedBox(height: 16),
 
               // 6. Input Dialog
-              ElevatedButton.icon(
-                onPressed: () async {
-                  String? input = await SnackNLoad.showInputDialog(
-                    title: 'Enter Name',
-                    message:
-                        'Please enter your full name associated with your account.',
-                    hintText: 'John Doe',
-                    dialogType: _dialogType,
-                  );
-                  if (input != null && input.isNotEmpty) {
-                    SnackNLoad.showSuccess('Hello, $input!');
-                  }
-                },
-                icon: const Icon(Icons.edit_outlined),
-                label: const Text('Show Input Dialog'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.all(16),
-                ),
-              ),
+              // ElevatedButton.icon(
+              //   onPressed: () async {
+              //     String? input = await SnackNLoad.showInputDialog(
+              //       title: 'Enter Name',
+              //       message:
+              //           'Please enter your full name associated with your account.',
+              //       hintText: 'John Doe',
+              //       dialogType: _dialogType,
+              //     );
+              //     if (input != null && input.isNotEmpty) {
+              //       SnackNLoad.showSuccess('Hello, $input!');
+              //     }
+              //   },
+              //   icon: const Icon(Icons.edit_outlined),
+              //   label: const Text('Show Input Dialog'),
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: Colors.indigo,
+              //     foregroundColor: Colors.white,
+              //     padding: const EdgeInsets.all(16),
+              //   ),
+              // ),
 
               const SizedBox(height: 32),
               const Text(

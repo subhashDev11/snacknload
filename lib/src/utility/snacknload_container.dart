@@ -663,91 +663,91 @@ class SnackNLoad {
   }
 
   /// Show a dialog with a text input field. Returns the input string.
-  static Future<String?> showInputDialog({
-    String? title,
-    String? message,
-    String? hintText,
-    String confirmLabel = 'Confirm',
-    String cancelLabel = 'Cancel',
-    bool useAdaptive = true,
-    TextStyle? titleStyle,
-    MaskType? maskType,
-    SnackNLoadDialogType? dialogType,
-    String? initialValue,
-  }) async {
-    Completer<String?> completer = Completer<String?>();
-    TextEditingController controller =
-        TextEditingController(text: initialValue ?? '');
+  // static Future<String?> showInputDialog({
+  //   String? title,
+  //   String? message,
+  //   String? hintText,
+  //   String confirmLabel = 'Confirm',
+  //   String cancelLabel = 'Cancel',
+  //   bool useAdaptive = true,
+  //   TextStyle? titleStyle,
+  //   MaskType? maskType,
+  //   SnackNLoadDialogType? dialogType,
+  //   String? initialValue,
+  // }) async {
+  //   Completer<String?> completer = Completer<String?>();
+  //   TextEditingController controller =
+  //       TextEditingController(text: initialValue ?? '');
 
-    late final LoadingStatusCallback callback;
-    callback = (status) {
-      if (status == LoadingStatus.dismiss) {
-        if (!completer.isCompleted) {
-          completer.complete(null);
-        }
-        SnackNLoad.removeCallback(callback);
-      }
-    };
+  //   late final LoadingStatusCallback callback;
+  //   callback = (status) {
+  //     if (status == LoadingStatus.dismiss) {
+  //       if (!completer.isCompleted) {
+  //         completer.complete(null);
+  //       }
+  //       SnackNLoad.removeCallback(callback);
+  //     }
+  //   };
 
-    Widget content = Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (message != null) ...[
-          Text(message),
-          const SizedBox(height: 16),
-        ],
-        Material(
-          color: Colors.transparent,
-          child: TextField(
-            controller: controller,
-            autofocus: true,
-            decoration: InputDecoration(
-              hintText: hintText,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-          ),
-        ),
-      ],
-    );
+  //   Widget content = Column(
+  //     mainAxisSize: MainAxisSize.min,
+  //     crossAxisAlignment: CrossAxisAlignment.stretch,
+  //     children: [
+  //       if (message != null) ...[
+  //         Text(message),
+  //         const SizedBox(height: 16),
+  //       ],
+  //       Material(
+  //         color: Colors.transparent,
+  //         child: TextField(
+  //           controller: controller,
+  //           autofocus: true,
+  //           decoration: InputDecoration(
+  //             hintText: hintText,
+  //             border: OutlineInputBorder(
+  //               borderRadius: BorderRadius.circular(12),
+  //             ),
+  //             contentPadding:
+  //                 const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
 
-    await showDialog(
-      title: title,
-      contentWidget: content,
-      useAdaptive: useAdaptive,
-      titleStyle: titleStyle,
-      maskType: maskType,
-      dialogType: dialogType,
-      actionConfigs: [
-        ActionConfig(
-          label: cancelLabel,
-          autoDismiss: false,
-          onPressed: () {
-            if (!completer.isCompleted) completer.complete(null);
-            SnackNLoad.dismiss();
-          },
-          buttonVariant: ButtonVariant.ghost,
-        ),
-        ActionConfig(
-          label: confirmLabel,
-          autoDismiss: false,
-          onPressed: () {
-            if (!completer.isCompleted) completer.complete(controller.text);
-            SnackNLoad.dismiss();
-          },
-          buttonVariant: ButtonVariant.primary,
-        ),
-      ],
-    );
+  //   await showDialog(
+  //     title: title,
+  //     contentWidget: content,
+  //     useAdaptive: useAdaptive,
+  //     titleStyle: titleStyle,
+  //     maskType: maskType,
+  //     dialogType: dialogType,
+  //     actionConfigs: [
+  //       ActionConfig(
+  //         label: cancelLabel,
+  //         autoDismiss: false,
+  //         onPressed: () {
+  //           if (!completer.isCompleted) completer.complete(null);
+  //           SnackNLoad.dismiss();
+  //         },
+  //         buttonVariant: ButtonVariant.ghost,
+  //       ),
+  //       ActionConfig(
+  //         label: confirmLabel,
+  //         autoDismiss: false,
+  //         onPressed: () {
+  //           if (!completer.isCompleted) completer.complete(controller.text);
+  //           SnackNLoad.dismiss();
+  //         },
+  //         buttonVariant: ButtonVariant.primary,
+  //       ),
+  //     ],
+  //   );
 
-    SnackNLoad.addStatusCallback(callback);
+  //   SnackNLoad.addStatusCallback(callback);
 
-    return completer.future;
-  }
+  //   return completer.future;
+  // }
 
   /// Show a full screen dialog
   static Future<void> showFullScreenDialog({
@@ -1266,7 +1266,8 @@ class SnackNLoad {
   }
 
   void _callback(LoadingStatus status) {
-    for (final LoadingStatusCallback callback in _statusCallbacks) {
+    // for (final LoadingStatusCallback callback in _statusCallbacks) {
+    for (final LoadingStatusCallback callback in List.of(_statusCallbacks)) {
       callback(status);
     }
   }

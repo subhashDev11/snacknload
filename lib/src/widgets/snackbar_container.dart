@@ -160,17 +160,20 @@ class SnackBarContainerState extends State<SnackBarContainer>
           animation: _animationController,
           builder: (BuildContext context, Widget? child) {
             return SnackNLoadTheme.loadingAnimation.buildWidget(
-              _Indicator(
-                message: _message,
-                title: widget.title,
-                titleStyle: widget.titleStyle,
-                messageStyle: widget.messageStyle,
-                showIcon: widget.showIcon ?? true,
-                type: widget.type,
-                showDivider: widget.showDivider ?? false,
-                backgroundColor: widget.backgroundColor,
-                contentPadding: widget.contentPadding,
-                margin: widget.margin,
+              SafeArea(
+                top: true,
+                child: _Indicator(
+                  message: _message,
+                  title: widget.title,
+                  titleStyle: widget.titleStyle,
+                  messageStyle: widget.messageStyle,
+                  showIcon: widget.showIcon ?? true,
+                  type: widget.type,
+                  showDivider: widget.showDivider ?? false,
+                  backgroundColor: widget.backgroundColor,
+                  contentPadding: widget.contentPadding,
+                  margin: widget.margin,
+                ),
               ),
               _animationController,
               _alignment,

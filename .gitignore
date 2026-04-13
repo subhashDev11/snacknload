@@ -35,3 +35,5 @@ doc/api/
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
+/example/android
+/example/ios

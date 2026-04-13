@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-
 import 'animation.dart';
 
 class OpacityAnimation extends SnackNLoadLoadingAnimation {
@@ -11,8 +10,8 @@ class OpacityAnimation extends SnackNLoadLoadingAnimation {
     AnimationController controller,
     AlignmentGeometry alignment,
   ) {
-    return Opacity(
-      opacity: controller.value,
+    return FadeTransition(
+      opacity: controller,
       child: child,
     );
   }
